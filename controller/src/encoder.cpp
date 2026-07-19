@@ -28,6 +28,10 @@ double sentinel::Encoder::distanceMm() const
     return static_cast<double>(m_pulse_count) / m_pulses_per_mm_;
 }
 
+/// @brief zero the encoder
 void sentinel::Encoder::reset()
 {
+    // reset acculumations
+    m_pulse_count = 0;
+    m_fractional_pulse_accumulator_ = 0;.0
 }
