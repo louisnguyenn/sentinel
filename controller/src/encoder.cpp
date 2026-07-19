@@ -2,12 +2,17 @@
 
 #include <cmath>
 
+// constructor
+sentinel::Encoder::Encoder(double pulses_per_mm = 10.0) : m_pulses_per_mm{pulses_per_mm}
+{
+}
+
 /// @brief update the encoder with the speed of the conveyor belt through pulses
 /// @param dt_s
 /// @param conveyor_speed_mm_s
 void sentinel::Encoder::update(double dt_s, double conveyor_speed_mm_s)
 {
-    double distance_this_tick_mm = conveyor_speed_mm_s * dt_s;          // calculate the distance from speed * time
+    double distance_this_tick_mm = conveyor_speed_mm_s * dt_s;         // calculate the distance from speed * time
     double pulses_this_tick = distance_this_tick_mm * m_pulses_per_mm; // calculate pulses each tick
 
     // round down when counting pulses at low speeds - accumulate fractional part for accuracy
@@ -33,5 +38,6 @@ void sentinel::Encoder::reset()
 {
     // reset acculumations
     m_pulse_count = 0;
-    m_fractional_pulse_accumulator = 0;.0
+    m_fractional_pulse_accumulator = 0;
+    .0
 }
