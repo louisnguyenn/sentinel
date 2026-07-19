@@ -1,0 +1,46 @@
+## ---- C++ / CMake ----
+build/
+controller/build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
+*.out
+
+## ---- Google Test ----
+Testing/
+CTestTestfile.cmake
+
+## ---- Python ----
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+## ---- Project runtime output (regenerate on each run, don't commit) ----
+logs/*.csv
+logs/*.png
+*.npz
+
+## ---- Sample data ----
+# data/sample_parts/
+
+## ---- Editor / IDE ----
+.vscode/
+.idea/
+*.swp
+
+## ---- OS ----
+.DS_Store
+Thumbs.db
