@@ -3,7 +3,7 @@
 #include <cmath>
 
 // constructor
-sentinel::Encoder::Encoder(double pulses_per_mm = 10.0) : m_pulses_per_mm{pulses_per_mm}
+sentinel::Encoder::Encoder(double pulses_per_mm) : m_pulses_per_mm{pulses_per_mm}
 {
 }
 

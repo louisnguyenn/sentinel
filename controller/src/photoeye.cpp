@@ -1,7 +1,7 @@
 #include "photoeye.hpp"
 
 // constructor
-sentinel::Photoeye::Photoeye(double debounce_time_s = 0.01) : m_debounce_time_s{debounce_time_s}
+sentinel::Photoeye::Photoeye(double debounce_time_s) : m_debounce_time_s{debounce_time_s}
 {
 }
 
