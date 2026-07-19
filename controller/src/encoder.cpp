@@ -23,6 +23,7 @@ uint32_t sentinel::Encoder::pulseCount() const
 /// Distance implied by the pulse count, in mm.
 double sentinel::Encoder::distanceMm() const
 {
+    return m_pulses_per_mm_;
 }
 
 void sentinel::Encoder::reset()
