@@ -1,5 +1,5 @@
-#ifndef LINEGUARD_ENCODER_HPP
-#define LINEGUARD_ENCODER_HPP
+#ifndef ENCODER_HPP
+#define ENCODER_HPP
 
 #include <cstdint>
 
@@ -21,9 +21,9 @@ public:
     void reset();
 
 private:
-    double pulses_per_mm_;
-    double fractional_pulse_accumulator_ = 0.0;
-    uint32_t pulse_count_ = 0;
+    double m_pulses_per_mm_;
+    double m_fractional_pulse_accumulator_ = 0.0;
+    uint32_t m_pulse_count_ = 0;
 };
 
 } // namespace sentinel
