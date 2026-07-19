@@ -1,7 +1,7 @@
 #ifndef PHOTOEYE_HPP
 #define PHOTOEYE_HPP
 
-namespace lineguard
+namespace sentinel
 {
 
 /// Simulates a through-beam photoeye sensor at the inspection zone.
@@ -26,6 +26,6 @@ class Photoeye
     bool reported_state_ = false;
 };
 
-} // namespace lineguard
+} // namespace sentinel
 
 #endif // PHOTOEYE_HPP
