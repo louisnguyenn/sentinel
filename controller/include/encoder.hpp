@@ -21,9 +21,9 @@ public:
     void reset();
 
 private:
-    double m_pulses_per_mm_;
-    double m_fractional_pulse_accumulator_ = 0.0;
-    uint32_t m_pulse_count_ = 0;
+    double m_pulses_per_mm;
+    double m_fractional_pulse_accumulator = 0.0;
+    uint32_t m_pulse_count = 0;
 };
 
 } // namespace sentinel
