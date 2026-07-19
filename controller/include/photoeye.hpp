@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PHOTOEYE_HPP
+#define PHOTOEYE_HPP
 
 namespace lineguard
 {
@@ -26,3 +27,5 @@ class Photoeye
 };
 
 } // namespace lineguard
+
+#endif // PHOTOEYE_HPP
