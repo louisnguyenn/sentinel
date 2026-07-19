@@ -20,10 +20,10 @@ class Photoeye
     bool isBlocked() const;
 
   private:
-    double m_debounce_time_s_;
-    double m_time_in_pending_state_s_ = 0.0;
-    bool m_pending_state_ = false;
-    bool m_reported_state_ = false;
+    double m_debounce_time_s;
+    double m_time_in_pending_state_s = 0.0;
+    bool m_pending_state = false;
+    bool m_reported_state = false;
 };
 
 } // namespace sentinel

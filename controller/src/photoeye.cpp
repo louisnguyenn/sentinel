@@ -5,19 +5,19 @@
 /// @param part_physically_present 
 void sentinel::Photoeye::update(double dt_s, bool part_physically_present)
 {
-    if (part_physically_present != m_pending_state_)
+    if (part_physically_present != m_pending_state)
     {
         // restart debounce timer
-        m_pending_state_ = part_physically_present;
-        m_time_in_pending_state_s_ = 0.0;
+        m_pending_state = part_physically_present;
+        m_time_in_pending_state_s = 0.0;
     }
     else
     {
-        m_time_in_pending_state_s_ += dt_s;
+        m_time_in_pending_state_s += dt_s;
         
-        if (m_time_in_pending_state_s_ >= m_debounce_time_s_ && m_reported_state_ != m_pending_state_)
+        if (m_time_in_pending_state_s >= m_debounce_time_s && m_reported_state != m_pending_state)
         {
-            m_reported_state_ = m_pending_state_;
+            m_reported_state = m_pending_state;
         }
     }
 }
@@ -26,5 +26,5 @@ void sentinel::Photoeye::update(double dt_s, bool part_physically_present)
 /// @return private boolean
 bool sentinel::Photoeye::isBlocked() const
 {
-    return m_reported_state_;
+    return m_reported_state;
 }
