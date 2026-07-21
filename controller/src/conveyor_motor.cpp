@@ -7,7 +7,9 @@ sentinel::ConveyorMotor::ConveyorMotor(double rated_speed_mm_s, double accel_mm_
 
 void sentinel::ConveyorMotor::setRunning(bool run)
 {
+    m_running = run;
 }
+
 void sentinel::ConveyorMotor::update(double dt_s)
 {
 }
