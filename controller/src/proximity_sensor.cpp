@@ -2,7 +2,7 @@
 
 // constuctor
 sentinel::ProximitySensor::ProximitySensor(double retracted_threshold, double extended_threshold)
-    : m_retracted_threshold(retracted_threshold), m_extended_threshold(extended_threshold)
+    : m_retracted_threshold{retracted_threshold}, m_extended_threshold{extended_threshold}
 {
 }
 
