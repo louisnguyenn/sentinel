@@ -26,6 +26,7 @@ bool sentinel::ConveyorLine::diverterRetracted() const
 
 void sentinel::ConveyorLine::commandDiverter(bool extend)
 {
+    m_diverter.command(extend);
 }
 
 void sentinel::ConveyorLine::setConveyorRunning(bool run)
