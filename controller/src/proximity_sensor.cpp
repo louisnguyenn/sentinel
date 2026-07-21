@@ -19,6 +19,7 @@ bool sentinel::ProximitySensor::isRetracted() const
 
 bool sentinel::ProximitySensor::isExtended() const
 {
+    return m_extended;
 }
 
 /// True while the cylinder is between the two sensors (in transit).
