@@ -4,9 +4,9 @@ sentinel::DiverterCylinder::DiverterCylinder(double travel_time_s) : m_travel_ti
 {
 }
 
-/// true = command extend, false = command retract.
 void sentinel::DiverterCylinder::command(bool extend)
 {
+    m_commanded_extend = extend;
 }
 
 void sentinel::DiverterCylinder::update(double dt_s)
