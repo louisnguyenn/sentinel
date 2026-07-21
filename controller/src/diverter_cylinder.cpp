@@ -42,6 +42,7 @@ void sentinel::DiverterCylinder::update(double dt_s)
 
 sentinel::DiverterCylinder::Position sentinel::DiverterCylinder::position() const
 {
+    return m_position;
 }
 
 double sentinel::DiverterCylinder::positionFraction() const
