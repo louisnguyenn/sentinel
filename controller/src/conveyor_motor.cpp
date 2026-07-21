@@ -1,6 +1,7 @@
 #include "conveyor_motor.hpp"
 
-sentinel::ConveyorMotor::ConveyorMotor(double rated_speed_mm_s, double accel_mm_s2)
+// constructor
+sentinel::ConveyorMotor::ConveyorMotor(double rated_speed_mm_s, double accel_mm_s2) : m_rated_speed_mm_s{rated_speed_mm_s}, m_accel_mm_s2{accel_mm_s2}
 {
 }
 
