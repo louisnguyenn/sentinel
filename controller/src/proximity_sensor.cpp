@@ -1,25 +1,26 @@
 #include "proximity_sensor.hpp"
 
-// constuctoer
+// constuctor
 sentinel::ProximitySensor::ProximitySensor(double retracted_threshold, double extended_threshold)
     : m_retracted_threshold(retracted_threshold), m_extended_threshold(extended_threshold)
 {
 }
 
-/// position_fraction: 0.0 = fully retracted, 1.0 = fully extended.
-void update(double position_fraction)
+void sentinel::ProximitySensor::update(double position_fraction)
+{
+    m_retracted = position_fraction <= m_retracted_threshold;
+    m_extended = position_fraction >= m_extended_threshold;
+}
+
+bool sentinel::ProximitySensor::isRetracted() const
 {
 }
 
-bool isRetracted() const
-{
-}
-
-bool isExtended() const
+bool sentinel::ProximitySensor::isExtended() const
 {
 }
 
 /// True while the cylinder is between the two sensors (in transit).
-bool isInTransit() const
+bool sentinel::ProximitySensor::isInTransit() const
 {
 }
