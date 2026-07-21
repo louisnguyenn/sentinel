@@ -41,4 +41,5 @@ double sentinel::ConveyorMotor::currentSpeedMmS() const
 
 bool sentinel::ConveyorMotor::isRunning() const
 {
+    return m_running;
 }
