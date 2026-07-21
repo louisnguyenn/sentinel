@@ -18,7 +18,7 @@ void sentinel::Encoder::update(double dt_s, double conveyor_speed_mm_s)
     // round down when counting pulses at low speeds - accumulate fractional part for accuracy
     m_fractional_pulse_accumulator += pulses_this_tick;
     double whole_pulses = std::floor(m_fractional_pulse_accumulator); // round down
-    m_pulse_count += static_cast<uint32_t> whole_pulses;
+    m_pulse_count += static_cast<uint32_t>(whole_pulses);
     m_fractional_pulse_accumulator -= whole_pulses;
 }
 
@@ -39,5 +39,5 @@ void sentinel::Encoder::reset()
     // reset acculumations
     m_pulse_count = 0;
     m_fractional_pulse_accumulator = 0;
-    .0
+    .0;
 }
