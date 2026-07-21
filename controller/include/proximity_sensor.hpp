@@ -16,7 +16,7 @@ public:
     bool isRetracted() const;
     bool isExtended() const;
     /// True while the cylinder is between the two sensors (in transit).
-    bool isInTransit() const;
+    bool isInTransit()   const;
 
 private:
     double m_retracted_threshold;
