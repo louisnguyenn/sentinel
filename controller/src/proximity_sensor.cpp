@@ -14,6 +14,7 @@ void sentinel::ProximitySensor::update(double position_fraction)
 
 bool sentinel::ProximitySensor::isRetracted() const
 {
+    return m_retracted;
 }
 
 bool sentinel::ProximitySensor::isExtended() const
