@@ -47,4 +47,5 @@ sentinel::DiverterCylinder::Position sentinel::DiverterCylinder::position() cons
 
 double sentinel::DiverterCylinder::positionFraction() const
 {
+    return m_position_fraction;
 }
