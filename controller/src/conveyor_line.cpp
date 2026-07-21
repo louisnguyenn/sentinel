@@ -30,4 +30,5 @@ void sentinel::ConveyorLine::commandDiverter(bool extend)
 
 void sentinel::ConveyorLine::setConveyorRunning(bool run)
 {
+    m_motor.setRunning(run);
 }
