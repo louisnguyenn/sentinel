@@ -36,6 +36,7 @@ void sentinel::ConveyorMotor::update(double dt_s)
 
 double sentinel::ConveyorMotor::currentSpeedMmS() const
 {
+    return m_current_speed_mm_s;
 }
 
 bool sentinel::ConveyorMotor::isRunning() const
