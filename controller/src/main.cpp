@@ -12,10 +12,10 @@ int main()
     { // simulate 3 seconds
         line.update(dt);
 
-        if (i < 50)
-        {
-            std::cout << "tick " << i << ": motor speed=" << line.motorSpeedMmS() << " mm/s\n";
-        }
+        // if (i < 50)
+        // {
+        //     std::cout << "tick " << i << ": motor speed=" << line.motorSpeedMmS() << " mm/s\n";
+        // }
 
         if (line.photoeyeBlocked())
         {
