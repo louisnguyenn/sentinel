@@ -66,6 +66,11 @@ void sentinel::ConveyorLine::setConveyorRunning(bool run)
     m_motor.setRunning(run);
 }
 
+double sentinel::ConveyorLine::motorSpeedMmS()
+{
+    return m_motor.currentSpeedMmS();
+}
+
 // private
 bool sentinel::ConveyorLine::anyPartInInspectionZone() const
 {
