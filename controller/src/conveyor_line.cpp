@@ -35,6 +35,7 @@ void sentinel::ConveyorLine::spawnPart()
 
 bool sentinel::ConveyorLine::photoeyeBlocked() const
 {
+    return m_photoeye.isBlocked();
 }
 
 uint32_t sentinel::ConveyorLine::encoderCount() const
