@@ -40,6 +40,7 @@ bool sentinel::ConveyorLine::photoeyeBlocked() const
 
 uint32_t sentinel::ConveyorLine::encoderCount() const
 {
+    return m_encoder.pulseCount();
 }
 
 bool sentinel::ConveyorLine::diverterExtended() const
