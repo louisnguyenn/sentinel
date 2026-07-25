@@ -30,7 +30,7 @@ void sentinel::ConveyorLine::update(double dt_s)
 
 void sentinel::ConveyorLine::spawnPart()
 {
-    m_parts.push_back(Part {id: m_next_part_id++, position_mm: 0.0});
+    m_parts.push_back(Part{id : m_next_part_id++, position_mm : 0.0});
 }
 
 bool sentinel::ConveyorLine::photoeyeBlocked() const
@@ -50,6 +50,7 @@ bool sentinel::ConveyorLine::diverterExtended() const
 
 bool sentinel::ConveyorLine::diverterRetracted() const
 {
+    return m_diverter.position() == sentinel::DiverterCylinder::Position::RETRACTED;
 }
 
 void sentinel::ConveyorLine::commandDiverter(bool extend)
