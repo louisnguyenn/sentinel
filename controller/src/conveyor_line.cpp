@@ -45,6 +45,7 @@ uint32_t sentinel::ConveyorLine::encoderCount() const
 
 bool sentinel::ConveyorLine::diverterExtended() const
 {
+    return m_diverter.position() == sentinel::DiverterCylinder::Position::EXTENDED;
 }
 
 bool sentinel::ConveyorLine::diverterRetracted() const
