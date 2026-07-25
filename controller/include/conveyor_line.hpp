@@ -33,6 +33,9 @@ public:
     void commandDiverter(bool extend);
     void setConveyorRunning(bool run);
 
+    /// Conveyor motor getter
+    double motorSpeedMmS();
+
 private:
     struct Part {
         int id;
