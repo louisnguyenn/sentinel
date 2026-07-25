@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/conveyor_line.hpp"
+#include "conveyor_line.hpp"
 
 int main() {
     sentinel::ConveyorLine line;

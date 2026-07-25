@@ -1,6 +1,9 @@
 #include "conveyor_line.hpp"
 
 // public
+// constuctor
+sentinel::ConveyorLine::ConveyorLine() = default;
+
 void sentinel::ConveyorLine::update(double dt_s)
 {
     m_motor.update(dt_s);
