@@ -4,7 +4,6 @@
 void sentinel::ConveyorLine::update(double dt_s)
 {
     m_motor.update(dt_s);
-    int i{};
 
     for (auto &part : m_parts)
     {
@@ -31,7 +30,7 @@ void sentinel::ConveyorLine::update(double dt_s)
 
 void sentinel::ConveyorLine::spawnPart()
 {
-    m_parts.push_back(Part{id : m_next_part_id++, position_mm : 0.0});
+    m_parts.push_back(Part{m_next_part_id++, 0.0});
 }
 
 bool sentinel::ConveyorLine::photoeyeBlocked() const
@@ -67,11 +66,12 @@ void sentinel::ConveyorLine::setConveyorRunning(bool run)
 // private
 bool sentinel::ConveyorLine::anyPartInInspectionZone() const
 {
-    double window{10};  // 10mm window around inspection zone
+    double window{10}; // 10mm window around inspection zone
 
     for (auto &part : m_parts)
     {
-        if (part.position_mm < kInspectionZoneMm - window && part.position_mm > kInspectionZoneMm + window);
+        // position is greater than lower bound and less than upper bound
+        if (part.position_mm < kInspectionZoneMm + window && part.position_mm > kInspectionZoneMm - window)
         {
             return true;
         }
