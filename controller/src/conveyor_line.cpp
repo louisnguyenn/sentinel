@@ -30,6 +30,7 @@ void sentinel::ConveyorLine::update(double dt_s)
 
 void sentinel::ConveyorLine::spawnPart()
 {
+    m_parts.push_back(Part {id: m_next_part_id++, position_mm: 0.0});
 }
 
 bool sentinel::ConveyorLine::photoeyeBlocked() const
