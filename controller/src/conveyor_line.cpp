@@ -1,5 +1,6 @@
 #include "conveyor_line.hpp"
 
+// public
 void sentinel::ConveyorLine::update(double dt_s)
 {
     m_motor.update(dt_s);
@@ -61,4 +62,20 @@ void sentinel::ConveyorLine::commandDiverter(bool extend)
 void sentinel::ConveyorLine::setConveyorRunning(bool run)
 {
     m_motor.setRunning(run);
+}
+
+// private
+bool sentinel::ConveyorLine::anyPartInInspectionZone() const
+{
+    double window{10};  // 10mm window around inspection zone
+
+    for (auto &part : m_parts)
+    {
+        if (part.position_mm < kInspectionZoneMm - window && part.position_mm > kInspectionZoneMm + window);
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
