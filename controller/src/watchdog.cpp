@@ -15,8 +15,10 @@ void sentinel::Watchdog::feed(uint16_t heartbeat_value)
     }
 }
 
+// returns true if not changed
 bool sentinel::Watchdog::timedOut() const
 {
+    return (std::chrono::steady_clock::now() - m_last_change) > m_timeout;
 }
 
 void sentinel::Watchdog::reset()
