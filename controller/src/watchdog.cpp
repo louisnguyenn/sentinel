@@ -21,6 +21,8 @@ bool sentinel::Watchdog::timedOut() const
     return (std::chrono::steady_clock::now() - m_last_change) > m_timeout;
 }
 
+// reset time
 void sentinel::Watchdog::reset()
 {
+    m_last_change = std::chrono::steady_clock::now();
 }
