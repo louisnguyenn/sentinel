@@ -41,7 +41,7 @@ sentinel::FaultCode sentinel::Controller::activeFault() const
 {
 }
 
-const sentinel::Stats sentinel::Controller::&stats() const
+const sentinel::Stats &sentinel::Controller::stats() const
 {
 }
 
@@ -52,6 +52,12 @@ void sentinel::Controller::inputScan()
 
 void sentinel::Controller::logicSolve()
 {
+    // check e-stop
+    if (m_estop_active == true)
+    {
+        enterFault(FaultCode::ESTOP);
+        return;
+    }
 }
 
 void sentinel::Controller::outputScan()
