@@ -1,5 +1,6 @@
 #include "watchdog.hpp"
 
+// constructor
 sentinel::Watchdog::Watchdog(std::chrono::milliseconds timeout) : m_timeout{timeout}
 {
 }
