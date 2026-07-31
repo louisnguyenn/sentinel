@@ -58,6 +58,70 @@ void sentinel::Controller::logicSolve()
         enterFault(FaultCode::ESTOP);
         return;
     }
+
+    // check if on auto
+    if (m_mode != OperatingMode::AUTO)
+    {
+        return;
+    }
+
+    switch (m_state)
+    {
+        case CycleState::IDLE:
+            // check photoeye if there is a part
+            if (m_photoeye_snapshot == true)
+            {
+                m_state = CycleState::PART_DETECTED;
+            }
+            break;
+        case CycleState::PART_DETECTED:
+            m_has_inspection_result = false; // no result yet
+            m_watchdog.reset();
+            m_state = CycleState::AWAIT_RESULT;
+            break;
+        case CycleState::AWAIT_RESULT:
+            // check if watchdog is still recieving updates
+            if (m_watchdog.timedOut() == true)
+            {
+                enterFault(FaultCode::VISION_TIMEOUT);
+                return;
+            }
+
+            if (m_has_inspection_result == true)
+            {
+                // check if result is defective
+                if (m_inspection_result_defective == true)
+                {
+                    m_state = CycleState::DIVERT_REJECT;
+                }
+
+                m_state = CycleState::DIVERT_ACCEPT;
+            }
+            break;
+        case CycleState::DIVERT_REJECT:
+            m_line.commandDiverter(true); // extend diverter
+
+            if (m_line.diverterExtended() == true)
+            {
+                m_stats.reject_count++; // increment reject count
+                m_state = CycleState::IDLE;
+            }
+            break;
+        case CycleState::DIVERT_ACCEPT:
+            m_line.commandDiverter(false); // retract diverter
+
+            if (m_line.diverterRetracted() == true)
+            {
+                m_state = CycleState::IDLE;
+            }
+            break;
+        case CycleState::FAULT:
+            if (m_fault_reset_requested == true)
+            {
+                attemptFaultReset();    // call fault reset
+            }
+            break;
+    }
 }
 
 void sentinel::Controller::outputScan()
