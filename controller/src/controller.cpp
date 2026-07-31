@@ -1,7 +1,7 @@
 #include "controller.hpp"
 
 // public methods
-sentinel::Controller::Controller(ConveyorLine &line) : m_line{line}
+sentinel::Controller::Controller(ConveyorLine& line) : m_line{line}
 {
 }
 
@@ -41,7 +41,7 @@ sentinel::FaultCode sentinel::Controller::activeFault() const
 {
 }
 
-const sentinel::Stats &sentinel::Controller::stats() const
+const sentinel::Stats& sentinel::Controller::stats() const
 {
 }
 

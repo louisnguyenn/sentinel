@@ -12,7 +12,8 @@ sentinel::Encoder::Encoder(double pulses_per_mm) : m_pulses_per_mm{pulses_per_mm
 /// @param conveyor_speed_mm_s
 void sentinel::Encoder::update(double dt_s, double conveyor_speed_mm_s)
 {
-    double distance_this_tick_mm = conveyor_speed_mm_s * dt_s;         // calculate the distance from speed * time
+    double distance_this_tick_mm =
+        conveyor_speed_mm_s * dt_s; // calculate the distance from speed * time
     double pulses_this_tick = distance_this_tick_mm * m_pulses_per_mm; // calculate pulses each tick
 
     // round down when counting pulses at low speeds - accumulate fractional part for accuracy

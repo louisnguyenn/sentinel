@@ -1,9 +1,16 @@
-BasedOnStyle: Google
+---
+Language: Cpp
+BasedOnStyle: LLVM
 IndentWidth: 4
+TabWidth: 4
+UseTab: Never
 ColumnLimit: 100
-AccessModifierOffset: -2
-NamespaceIndentation: None
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+IndentCaseLabels: true
 PointerAlignment: Left
+ReferenceAlignment: Left
+SpaceBeforeParens: ControlStatements
 SortIncludes: true
-AllowShortIfStatementsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: Empty

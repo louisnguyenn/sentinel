@@ -1,5 +1,6 @@
-#include "conveyor_line.hpp"
 #include <iostream>
+
+#include "conveyor_line.hpp"
 
 int main()
 {
@@ -19,7 +20,8 @@ int main()
 
         if (line.photoeyeBlocked())
         {
-            std::cout << "tick " << i << ": photoeye BLOCKED, encoder=" << line.encoderCount() << "\n";
+            std::cout << "tick " << i << ": photoeye BLOCKED, encoder=" << line.encoderCount()
+                      << "\n";
         }
     }
     return 0;

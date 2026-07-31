@@ -8,7 +8,7 @@ void sentinel::ConveyorLine::update(double dt_s)
 {
     m_motor.update(dt_s);
 
-    for (auto &part : m_parts)
+    for (auto& part : m_parts)
     {
         part.position_mm += m_motor.currentSpeedMmS() * dt_s;
     }
@@ -28,10 +28,13 @@ void sentinel::ConveyorLine::update(double dt_s)
     }
 
     // update components of the line
-    m_photoeye.update(dt_s, anyPartInInspectionZone()); // check if part is physically in the inspection zone
-    m_encoder.update(dt_s, m_motor.currentSpeedMmS());  // count how far the belt has moved using pulses
-    m_diverter.update(dt_s);    //  time speed accurately to divert the defected part
-    m_proximity.update(m_diverter.positionFraction());  // check if the arm has fully extended or not (stuck on extending)
+    m_photoeye.update(
+        dt_s, anyPartInInspectionZone()); // check if part is physically in the inspection zone
+    m_encoder.update(dt_s,
+                     m_motor.currentSpeedMmS()); // count how far the belt has moved using pulses
+    m_diverter.update(dt_s); //  time speed accurately to divert the defected part
+    m_proximity.update(m_diverter.positionFraction()); // check if the arm has fully extended or
+                                                       // not (stuck on extending)
 }
 
 void sentinel::ConveyorLine::spawnPart()
@@ -79,10 +82,11 @@ bool sentinel::ConveyorLine::anyPartInInspectionZone() const
 {
     double window{10}; // 10mm window around inspection zone
 
-    for (auto &part : m_parts)
+    for (auto& part : m_parts)
     {
         // position is greater than lower bound and less than upper bound
-        if (part.position_mm < kInspectionZoneMm + window && part.position_mm > kInspectionZoneMm - window)
+        if (part.position_mm < kInspectionZoneMm + window &&
+            part.position_mm > kInspectionZoneMm - window)
         {
             return true;
         }

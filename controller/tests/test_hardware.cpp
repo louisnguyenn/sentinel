@@ -1,6 +1,8 @@
-#include "watchdog.hpp"
 #include <gtest/gtest.h>
+
 #include <thread>
+
+#include "watchdog.hpp"
 
 TEST(WatchdogTest, DoesNotTimeOutImmediatelyAfterFeed)
 {

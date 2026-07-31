@@ -3,11 +3,13 @@
 
 #include <cstdint>
 
-namespace sentinel {
+namespace sentinel
+{
 
 /// Simulates an incremental encoder on the conveyor drive shaft.
-class Encoder {
-public:
+class Encoder
+{
+  public:
     explicit Encoder(double pulses_per_mm = 10.0);
 
     /// Advance the encoder given the conveyor's current linear speed.
@@ -20,7 +22,7 @@ public:
 
     void reset();
 
-private:
+  private:
     double m_pulses_per_mm;
     double m_fractional_pulse_accumulator = 0.0;
     uint32_t m_pulse_count = 0;

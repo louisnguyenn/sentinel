@@ -2,19 +2,22 @@
 #define CONVEYOR_LINE_HPP
 
 #include <vector>
-#include "photoeye.hpp"
-#include "encoder.hpp"
-#include "proximity_sensor.hpp"
+
 #include "conveyor_motor.hpp"
 #include "diverter_cylinder.hpp"
+#include "encoder.hpp"
+#include "photoeye.hpp"
+#include "proximity_sensor.hpp"
 
-namespace sentinel {
+namespace sentinel
+{
 
 /// Owns the simulated field devices and a simple list of parts moving
 /// down the conveyor. This is the "plant" the controller reads from
 /// and writes to, standing in for real I/O.
-class ConveyorLine {
-public:
+class ConveyorLine
+{
+  public:
     ConveyorLine();
 
     /// Advance the whole simulated plant by one scan-cycle tick.
@@ -36,8 +39,9 @@ public:
     /// Conveyor motor getter
     double motorSpeedMmS();
 
-private:
-    struct Part {
+  private:
+    struct Part
+    {
         int id;
         double position_mm;
         bool diverted = false;

@@ -1,9 +1,9 @@
 #ifndef CONTROLLER_HPP
 #define CONTROLLER_HPP
 
-#include <cstdint>
 #include "conveyor_line.hpp"
 #include "watchdog.hpp"
+#include <cstdint>
 
 namespace sentinel
 {
@@ -50,7 +50,7 @@ struct Stats
 class Controller
 {
   public:
-    explicit Controller(ConveyorLine &line);
+    explicit Controller(ConveyorLine& line);
 
     /// Advance the controller by one scan cycle. dt_s should match
     /// whatever tick rate the ConveyorLine itself is being updated at.
@@ -69,7 +69,7 @@ class Controller
     CycleState state() const;
     OperatingMode mode() const;
     FaultCode activeFault() const;
-    const Stats &stats() const;
+    const Stats& stats() const;
 
   private:
     void inputScan();
@@ -80,7 +80,7 @@ class Controller
     void enterFault(FaultCode code);
     void attemptFaultReset();
 
-    ConveyorLine &m_line;
+    ConveyorLine& m_line;
     Watchdog m_watchdog;
     Stats m_stats;
 
