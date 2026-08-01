@@ -31,14 +31,17 @@ void sentinel::Controller::feedVisionHeartbeat(uint16_t heartbeat_value)
 
 sentinel::CycleState sentinel::Controller::state() const
 {
+    return m_state;
 }
 
 sentinel::OperatingMode sentinel::Controller::mode() const
 {
+    return m_mode;
 }
 
 sentinel::FaultCode sentinel::Controller::activeFault() const
 {
+    return m_active_fault;
 }
 
 const sentinel::Stats& sentinel::Controller::stats() const
