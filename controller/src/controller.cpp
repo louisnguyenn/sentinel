@@ -89,7 +89,7 @@ void sentinel::Controller::logicSolve()
     {
         case CycleState::IDLE:
             // check photoeye if there is a part
-            if (m_photoeye_snapshot == true)
+            if (m_photoeye_snapshot == true && m_photoeye_previous == false)
             {
                 m_state = CycleState::PART_DETECTED;
             }
