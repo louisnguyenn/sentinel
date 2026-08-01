@@ -118,7 +118,7 @@ void sentinel::Controller::logicSolve()
         case CycleState::FAULT:
             if (m_fault_reset_requested == true)
             {
-                attemptFaultReset();    // call fault reset
+                attemptFaultReset(); // call fault reset
             }
             break;
     }
@@ -134,6 +134,11 @@ void sentinel::Controller::housekeeping()
 
 void sentinel::Controller::enterFault(FaultCode code)
 {
+    m_state = CycleState::FAULT;
+    m_active_fault = code;
+    m_stats.fault_count++;
+    m_line.commandDiverter(false);    // retract diverter
+    m_line.setConveyorRunning(false); // turn off motor
 }
 
 void sentinel::Controller::attemptFaultReset()
