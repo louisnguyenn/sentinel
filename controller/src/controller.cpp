@@ -46,6 +46,7 @@ sentinel::FaultCode sentinel::Controller::activeFault() const
 
 const sentinel::Stats& sentinel::Controller::stats() const
 {
+    return m_stats;
 }
 
 // private methods
