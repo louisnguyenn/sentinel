@@ -5,7 +5,7 @@ sentinel::Controller::Controller(ConveyorLine& line) : m_line{line}
 {
 }
 
-/// @brief entry point - runs full cycle in order: input → decide → output → bookkeeping
+/// @brief entry point - runs full scan cycle in order: input → decide → output → bookkeeping
 /// @param dt_s 
 void sentinel::Controller::tick(double dt_s)
 {
@@ -17,6 +17,7 @@ void sentinel::Controller::tick(double dt_s)
 
 void sentinel::Controller::setEstop(bool active)
 {
+    m_estop_active = active;
 }
 
 void sentinel::Controller::requestFaultReset()
