@@ -22,18 +22,23 @@ void sentinel::Controller::setEstop(bool active)
 
 void sentinel::Controller::requestFaultReset()
 {
+    m_fault_reset_requested = true;
 }
 
 void sentinel::Controller::setMode(OperatingMode mode)
 {
+    m_mode = mode;
 }
 
 void sentinel::Controller::submitInspectionResult(bool defective)
 {
+    m_has_inspection_result = true;
+    m_inspection_result_defective = defective;
 }
 
 void sentinel::Controller::feedVisionHeartbeat(uint16_t heartbeat_value)
 {
+    m_watchdog.feed(heartbeat_value);
 }
 
 sentinel::CycleState sentinel::Controller::state() const
