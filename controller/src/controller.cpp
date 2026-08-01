@@ -57,8 +57,11 @@ const sentinel::Stats& sentinel::Controller::stats() const
 }
 
 // private methods
+
+/// @brief taking a 'snapshot' - get photoeye's state
 void sentinel::Controller::inputScan()
 {
+    m_photoeye_snapshot = m_line.photoeyeBlocked();
 }
 
 void sentinel::Controller::logicSolve()
