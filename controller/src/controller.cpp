@@ -145,10 +145,12 @@ void sentinel::Controller::logicSolve()
     }
 }
 
+// TODO: finish modbus in phase 3 first
 void sentinel::Controller::outputScan()
 {
 }
 
+// TODO: increment cycle_count once we track previous state
 void sentinel::Controller::housekeeping()
 {
 }
