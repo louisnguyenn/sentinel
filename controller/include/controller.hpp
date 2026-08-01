@@ -97,6 +97,7 @@ class Controller
     // Snapshot of sensor state, captured during inputScan() and used
     // only during logicSolve() — never re-read mid-logic.
     bool m_photoeye_snapshot = false;
+    bool m_photoeye_previous = false;
 };
 
 } // namespace sentinel
