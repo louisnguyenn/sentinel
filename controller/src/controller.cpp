@@ -94,8 +94,10 @@ void sentinel::Controller::logicSolve()
                 {
                     m_state = CycleState::DIVERT_REJECT;
                 }
-
-                m_state = CycleState::DIVERT_ACCEPT;
+                else
+                {
+                    m_state = CycleState::DIVERT_ACCEPT;
+                }
             }
             break;
         case CycleState::DIVERT_REJECT:
