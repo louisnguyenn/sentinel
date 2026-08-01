@@ -6,7 +6,7 @@ sentinel::Controller::Controller(ConveyorLine& line) : m_line{line}
 }
 
 /// @brief entry point - runs full scan cycle in order: input → decide → output → bookkeeping
-/// @param dt_s 
+/// @param dt_s
 void sentinel::Controller::tick(double dt_s)
 {
     inputScan();
@@ -66,6 +66,7 @@ const sentinel::Stats& sentinel::Controller::stats() const
 /// @brief taking a 'snapshot' - get photoeye's state
 void sentinel::Controller::inputScan()
 {
+    m_photoeye_previous = m_photoeye_snapshot; // save the snapshot first before updating
     m_photoeye_snapshot = m_line.photoeyeBlocked();
 }
 
