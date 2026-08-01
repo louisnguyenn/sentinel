@@ -143,4 +143,22 @@ void sentinel::Controller::enterFault(FaultCode code)
 
 void sentinel::Controller::attemptFaultReset()
 {
+    if (m_active_fault == FaultCode::ESTOP)
+    {
+        if (m_estop_active == true)
+        {
+            return; // cannot clear an e-stop fault while the e-stop is still active
+        }
+    }
+    else if (m_active_fault == FaultCode::VISION_TIMEOUT)
+    {
+        m_watchdog.reset(); // reset watchdog to clear fault
+    }
+
+    // reset fault
+    m_active_fault = FaultCode::NONE;
+    m_state = CycleState::IDLE;
+    m_fault_reset_requested = false;
+
+    m_line.setConveyorRunning(true); // set conveyor running
 }
