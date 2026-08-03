@@ -1,5 +1,5 @@
-#ifndef ENCODER_HPP
-#define ENCODER_HPP
+#ifndef SENTINEL_ENCODER_HPP
+#define SENTINEL_ENCODER_HPP
 
 #include <cstdint>
 

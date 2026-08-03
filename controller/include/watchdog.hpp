@@ -1,5 +1,5 @@
-#ifndef WATCHDOG_HPP
-#define WATCHDOG_HPP
+#ifndef SENTINEL_WATCHDOG_HPP
+#define SENTINEL_WATCHDOG_HPP
 
 #include <chrono>
 #include <cstdint>

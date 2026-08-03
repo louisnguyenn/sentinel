@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_HPP
-#define CONTROLLER_HPP
+#ifndef SENTINEL_CONTROLLER_HPP
+#define SENTINEL_CONTROLLER_HPP
 
 #include "conveyor_line.hpp"
 #include "watchdog.hpp"

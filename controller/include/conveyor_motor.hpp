@@ -1,5 +1,5 @@
-#ifndef CONVEYOR_MOTOR_HPP
-#define CONVEYOR_MOTOR_HPP
+#ifndef SENTINEL_CONVEYOR_MOTOR_HPP
+#define SENTINEL_CONVEYOR_MOTOR_HPP
 
 namespace sentinel
 {
