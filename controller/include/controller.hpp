@@ -2,6 +2,7 @@
 #define SENTINEL_CONTROLLER_HPP
 
 #include "conveyor_line.hpp"
+#include "modbus_registers.hpp"
 #include "watchdog.hpp"
 #include <cstdint>
 
@@ -70,6 +71,17 @@ class Controller
     OperatingMode mode() const;
     FaultCode activeFault() const;
     const Stats& stats() const;
+
+    /// Translation layer for server-client communication using Modbus
+    /// Reads registers written by external clients (HMI, vision) and
+    /// drives the controller's existing setters accordingly. Call this
+    /// once per scan cycle, before tick().
+    void readInputRegisters(const uint16_t registers[REG_COUNT]);
+
+    /// Writes the controller's current internal state out into the
+    /// registers array, for external clients to read. Call this once
+    /// per scan cycle, after tick().
+    void writeOutputRegisters(uint16_t registers[REG_COUNT]) const;
 
   private:
     void inputScan();
