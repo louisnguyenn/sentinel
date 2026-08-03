@@ -61,6 +61,14 @@ const sentinel::Stats& sentinel::Controller::stats() const
     return m_stats;
 }
 
+void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT])
+{
+}
+
+void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) const
+{
+}
+
 // private methods
 
 /// @brief taking a 'snapshot' - get photoeye's state
