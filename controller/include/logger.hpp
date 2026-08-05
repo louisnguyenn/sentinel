@@ -1,5 +1,5 @@
-#ifndef LOGGER_HPP
-#define LOGGER_HPP
+#ifndef SENTINEL_LOGGER_HPP
+#define SENTINEL_LOGGER_HPP
 
 #include <string>
 

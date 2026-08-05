@@ -1,5 +1,5 @@
-#ifndef CONVEYOR_LINE_HPP
-#define CONVEYOR_LINE_HPP
+#ifndef SENTINEL_CONVEYOR_LINE_HPP
+#define SENTINEL_CONVEYOR_LINE_HPP
 
 #include <vector>
 

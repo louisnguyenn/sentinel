@@ -30,6 +30,8 @@ void sentinel::Controller::setMode(OperatingMode mode)
     m_mode = mode;
 }
 
+/// @brief Updates members on part inspection result
+/// @param defective - 0 = OK, 1 = defective
 void sentinel::Controller::submitInspectionResult(bool defective)
 {
     m_has_inspection_result = true;
@@ -59,6 +61,51 @@ sentinel::FaultCode sentinel::Controller::activeFault() const
 const sentinel::Stats& sentinel::Controller::stats() const
 {
     return m_stats;
+}
+
+/// @brief Reads input registers from Modbus and calls corresponding methods
+/// @param registers 
+void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT])
+{
+    // set estop
+    setEstop(registers[REG_ESTOP] != 0); // return boolean
+
+    // mode selection
+    // TODO: possible error logging / throw error if wrong mode is selected
+    switch (registers[REG_MODE_SELECT])
+    {
+        case 0:
+            setMode(OperatingMode::AUTO);
+            break;
+
+        case 1:
+            setMode(OperatingMode::MANUAL);
+            break;
+
+        case 2:
+            setMode(OperatingMode::MAINTENANCE);
+            break;
+    }
+
+    // reset fault
+    if (registers[REG_RESET_FAULT] != 0)
+    {
+        requestFaultReset();
+    }
+
+    // inspection result
+    // TODO: fix condition, ensure register inspection result value does not carry past result 
+    if (m_state == CycleState::AWAIT_RESULT)
+    {
+        submitInspectionResult(registers[REG_INSPECTION_RESULT] != 0);
+    }
+
+    // vision heartbeat for watchdog
+    feedVisionHeartbeat(registers[REG_VISION_HEARTBEAT]);
+}
+
+void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) const
+{
 }
 
 // private methods

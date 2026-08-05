@@ -1,5 +1,5 @@
-#ifndef PHOTOEYE_HPP
-#define PHOTOEYE_HPP
+#ifndef SENTINEL_PHOTOEYE_HPP
+#define SENTINEL_PHOTOEYE_HPP
 
 namespace sentinel
 {
