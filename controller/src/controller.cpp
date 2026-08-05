@@ -64,7 +64,7 @@ const sentinel::Stats& sentinel::Controller::stats() const
 }
 
 /// @brief Reads input registers from Modbus and calls corresponding methods
-/// @param registers 
+/// @param registers
 void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT])
 {
     // set estop
@@ -94,7 +94,7 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
     }
 
     // inspection result
-    // TODO: fix condition, ensure register inspection result value does not carry past result 
+    // TODO: fix condition, ensure register inspection result value does not carry past result
     if (m_state == CycleState::AWAIT_RESULT)
     {
         submitInspectionResult(registers[REG_INSPECTION_RESULT] != 0);
@@ -106,6 +106,14 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
 
 void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) const
 {
+    registers[REG_MACHINE_STATE] = static_cast<uint16_t>(state());
+
+    registers[REG_CYCLE_COUNT] = m_stats.cycle_count;
+    registers[REG_REJECT_COUNT] = m_stats.reject_count;
+    registers[REG_FAULT_COUNT] = m_stats.fault_count;
+
+    registers[REG_PHOTOEYE] = m_photoeye_snapshot;
+
 }
 
 // private methods
