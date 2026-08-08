@@ -25,8 +25,8 @@ class ModbusServer
     uint16_t *registers();
 
   private:
-    modbus_t *m_ctx = nullptr;
-    modbus_mapping_t *m_mapping = nullptr;
+    modbus_t *m_ctx = nullptr;  // Connection settings (IP, port)
+    modbus_mapping_t *m_mapping = nullptr;  // Array of Registers
     int m_server_socket = -1;
 };
 
