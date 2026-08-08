@@ -92,8 +92,6 @@ class Controller
     void enterFault(FaultCode code);
     void attemptFaultReset();
 
-    uint16_t getRegisters(const uint16_t registers[REG_COUNT]) const;
-
     ConveyorLine& m_line;
     Watchdog m_watchdog;
     Stats m_stats;
@@ -114,6 +112,7 @@ class Controller
     bool m_photoeye_previous = false;
 
     uint16_t m_last_result_seq = 0;
+    bool m_result_seq_baseline_captured = false;
 };
 
 } // namespace sentinel

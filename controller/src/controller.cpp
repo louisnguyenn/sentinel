@@ -161,7 +161,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::PART_DETECTED:
             m_has_inspection_result = false; // no result yet
-            m_last_result_seq = registers[REG_RESULT_SEQ];
+            m_last_result_seq = ;
             m_watchdog.reset();
             m_state = CycleState::AWAIT_RESULT;
             break;
@@ -251,9 +251,4 @@ void sentinel::Controller::attemptFaultReset()
     m_fault_reset_requested = false;
 
     m_line.setConveyorRunning(true); // set conveyor running
-}
-
-uint16_t sentinel::Controller::getRegisters(RegisterIndex index)
-{
-    return registers[index];
 }
