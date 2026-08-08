@@ -42,6 +42,18 @@ sentinel::ModbusServer::~ModbusServer()
 
 void sentinel::ModbusServer::poll()
 {
+    uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
+
+    /// Checks if there is a request
+    /// Returns 0 if not request
+    int rc = modbus_receive(m_ctx, query);
+
+    // rc == 0: no request pending this tick - not an error
+    // rc > 0: an error occured - log error
+    if (rc > 0)
+    {
+        modbus_reply(m_ctx, query, rc, m_mapping); // Answers whatever request came in
+    }
 }
 
 uint16_t* sentinel::ModbusServer::registers()
