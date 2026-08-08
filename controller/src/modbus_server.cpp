@@ -25,6 +25,10 @@ sentinel::ModbusServer::ModbusServer(const char* ip, int port)
     modbus_set_socket(m_ctx, m_server_socket);
 }
 
+sentinel::ModbusServer::~ModbusServer()
+{
+}
+
 void sentinel::ModbusServer::poll()
 {
 }
