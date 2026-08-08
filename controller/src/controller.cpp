@@ -93,13 +93,13 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
         requestFaultReset();
     }
 
-    
     // inspection result
-    // TODO: fix condition, ensure register inspection result value does not carry past result
     if (m_state == CycleState::AWAIT_RESULT)
     {
-        if (m_has_inspection_result == false)
+        // check for new result
+        if (registers[REG_RESULT_SEQ] != m_last_result_seq)
         {
+            m_last_result_seq = registers[REG_RESULT_SEQ];
             submitInspectionResult(registers[REG_INSPECTION_RESULT] != 0);
         }
     }
@@ -161,6 +161,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::PART_DETECTED:
             m_has_inspection_result = false; // no result yet
+            m_last_result_seq = registers[REG_RESULT_SEQ];
             m_watchdog.reset();
             m_state = CycleState::AWAIT_RESULT;
             break;
