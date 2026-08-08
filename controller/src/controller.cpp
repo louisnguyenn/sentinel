@@ -252,3 +252,8 @@ void sentinel::Controller::attemptFaultReset()
 
     m_line.setConveyorRunning(true); // set conveyor running
 }
+
+uint16_t sentinel::Controller::getRegisters(RegisterIndex index)
+{
+    return registers[index];
+}

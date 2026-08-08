@@ -92,7 +92,7 @@ class Controller
     void enterFault(FaultCode code);
     void attemptFaultReset();
 
-    uint16_t getRegisters(RegisterIndex);
+    uint16_t getRegisters(const uint16_t registers[REG_COUNT]) const;
 
     ConveyorLine& m_line;
     Watchdog m_watchdog;
