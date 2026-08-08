@@ -110,6 +110,8 @@ class Controller
     // only during logicSolve() — never re-read mid-logic.
     bool m_photoeye_snapshot = false;
     bool m_photoeye_previous = false;
+
+    uint16_t m_last_result_seq = 0;
 };
 
 } // namespace sentinel
