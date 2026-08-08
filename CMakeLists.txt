@@ -17,7 +17,15 @@ add_library(sentinel_hardware
     controller/src/conveyor_line.cpp
     controller/src/watchdog.cpp
     controller/src/controller.cpp
+    controller/src/modbus_server.cpp
 )
+
+# --- Modbus ---
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(MODBUS REQUIRED libmodbus)
+
+target_link_libraries(sentinel_hardware PUBLIC ${MODBUS_LIBRARIES})
+target_include_directories(sentinel_hardware PUBLIC ${MODBUS_INCLUDE_DIRS})
 
 # Anything that links against sentinel_hardware automatically gets this
 # include path, so #include "photoeye.hpp" resolves correctly.
