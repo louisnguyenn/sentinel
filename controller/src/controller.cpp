@@ -96,6 +96,14 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
     // inspection result
     if (m_state == CycleState::AWAIT_RESULT)
     {
+        // ensure new baseline to avoid leftover data
+        if (!m_result_seq_baseline_captured)
+        {
+            // First time seeing AWAIT_RESULT since it started - track whatever sequence number is currenting stored as the baseline so leftover data from previous part cannot be mistaken as new data
+            m_last_result_seq = registers[REG_RESULT_SEQ];
+            m_result_seq_baseline_captured = true;
+        }
+
         // check for new result
         if (registers[REG_RESULT_SEQ] != m_last_result_seq)
         {
@@ -161,7 +169,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::PART_DETECTED:
             m_has_inspection_result = false; // no result yet
-            m_last_result_seq = ;
+            m_result_seq_baseline_captured = false; // next readInputRegisters() call will establish a new baseline
             m_watchdog.reset();
             m_state = CycleState::AWAIT_RESULT;
             break;
