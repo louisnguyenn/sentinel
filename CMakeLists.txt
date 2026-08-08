@@ -17,6 +17,7 @@ add_library(sentinel_hardware
     controller/src/conveyor_line.cpp
     controller/src/watchdog.cpp
     controller/src/controller.cpp
+    controller/src/modbus_server.cpp
 )
 
 # Anything that links against sentinel_hardware automatically gets this
