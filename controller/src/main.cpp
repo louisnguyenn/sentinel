@@ -30,51 +30,51 @@
 // }
 
 /// phase 2 test harness
-#include "controller.hpp"
-#include "conveyor_line.hpp"
-#include <iostream>
+// #include "controller.hpp"
+// #include "conveyor_line.hpp"
+// #include <iostream>
 
-int main()
-{
-    sentinel::ConveyorLine line;
-    sentinel::Controller controller(line);
+// int main()
+// {
+//     sentinel::ConveyorLine line;
+//     sentinel::Controller controller(line);
 
-    line.setConveyorRunning(true);
-    line.spawnPart();
+//     line.setConveyorRunning(true);
+//     line.spawnPart();
 
-    const double dt = 0.01;
-    uint16_t fake_heartbeat = 0;
-    bool second_part_spawned = false;
+//     const double dt = 0.01;
+//     uint16_t fake_heartbeat = 0;
+//     bool second_part_spawned = false;
 
-    for (int i = 0; i < 700; ++i)
-    { // extended from 400 — see note below
-        line.update(dt);
-        controller.tick(dt);
+//     for (int i = 0; i < 700; ++i)
+//     { // extended from 400 — see note below
+//         line.update(dt);
+//         controller.tick(dt);
 
-        if (controller.state() == sentinel::CycleState::AWAIT_RESULT)
-        {
-            fake_heartbeat++;
-            controller.feedVisionHeartbeat(fake_heartbeat);
-            if (i % 5 == 0)
-            {
-                controller.submitInspectionResult(false);
-            }
-        }
+//         if (controller.state() == sentinel::CycleState::AWAIT_RESULT)
+//         {
+//             fake_heartbeat++;
+//             controller.feedVisionHeartbeat(fake_heartbeat);
+//             if (i % 5 == 0)
+//             {
+//                 controller.submitInspectionResult(false);
+//             }
+//         }
 
-        // Spawn a second part well after the first one has cleared IDLE.
-        if (i == 350 && !second_part_spawned)
-        {
-            line.spawnPart();
-            second_part_spawned = true;
-        }
+//         // Spawn a second part well after the first one has cleared IDLE.
+//         if (i == 350 && !second_part_spawned)
+//         {
+//             line.spawnPart();
+//             second_part_spawned = true;
+//         }
 
-        std::cout << "tick " << i << ": state=" << static_cast<int>(controller.state())
-                  << " cycles=" << controller.stats().cycle_count
-                  << " rejects=" << controller.stats().reject_count << "\n";
-    }
+//         std::cout << "tick " << i << ": state=" << static_cast<int>(controller.state())
+//                   << " cycles=" << controller.stats().cycle_count
+//                   << " rejects=" << controller.stats().reject_count << "\n";
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 /// phase 3 test harness
 #include "controller.hpp"
