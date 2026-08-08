@@ -32,10 +32,13 @@
 /// phase 2 test harness
 #include "controller.hpp"
 #include "conveyor_line.hpp"
+#include "modbus_server.hpp"
 #include <iostream>
 
 int main()
 {
+    sentinel::ModbusServer modbus("0.0.0.0", 502);
+
     sentinel::ConveyorLine line;
     sentinel::Controller controller(line);
 
@@ -45,6 +48,17 @@ int main()
     const double dt = 0.01;
     uint16_t fake_heartbeat = 0;
     bool second_part_spawned = false;
+
+    for (;;)
+    {
+        modbus.poll();
+        controller.readInputRegisters(modbus.registers());
+
+        line.update(dt);
+        controller.tick(dt);
+
+        controller.writeOutputRegisters(modbus.registers());
+    }
 
     for (int i = 0; i < 700; ++i)
     { // extended from 400 — see note below
@@ -72,6 +86,6 @@ int main()
                   << " cycles=" << controller.stats().cycle_count
                   << " rejects=" << controller.stats().reject_count << "\n";
     }
-    
+
     return 0;
 }
