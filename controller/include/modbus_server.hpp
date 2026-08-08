@@ -10,6 +10,7 @@ namespace sentinel
 /// Thin wrapper around libmodbus: owns the register array and the
 /// TCP listening socket, and knows how to service one incoming
 /// request without blocking forever if nothing has arrived.
+/// Handles a single client connection
 class ModbusServer
 {
   public:
