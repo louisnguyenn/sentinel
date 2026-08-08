@@ -58,4 +58,5 @@ void sentinel::ModbusServer::poll()
 
 uint16_t* sentinel::ModbusServer::registers()
 {
+    return m_mapping->tab_registers;
 }
