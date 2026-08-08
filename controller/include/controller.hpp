@@ -92,6 +92,8 @@ class Controller
     void enterFault(FaultCode code);
     void attemptFaultReset();
 
+    uint16_t getRegisters(RegisterIndex);
+
     ConveyorLine& m_line;
     Watchdog m_watchdog;
     Stats m_stats;
