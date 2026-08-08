@@ -84,7 +84,7 @@
 
 int main()
 {
-    sentinel::ModbusServer modbus("0.0.0.0", 502);
+    sentinel::ModbusServer modbus("0.0.0.0", 5020);
 
     sentinel::ConveyorLine line;
     sentinel::Controller controller(line);
