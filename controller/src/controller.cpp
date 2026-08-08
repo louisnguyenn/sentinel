@@ -93,11 +93,15 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
         requestFaultReset();
     }
 
+    
     // inspection result
     // TODO: fix condition, ensure register inspection result value does not carry past result
     if (m_state == CycleState::AWAIT_RESULT)
     {
-        submitInspectionResult(registers[REG_INSPECTION_RESULT] != 0);
+        if (m_has_inspection_result == false)
+        {
+            submitInspectionResult(registers[REG_INSPECTION_RESULT] != 0);
+        }
     }
 
     // vision heartbeat for watchdog
@@ -108,12 +112,18 @@ void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) c
 {
     registers[REG_MACHINE_STATE] = static_cast<uint16_t>(state());
 
+    // TODO: populate trigger capture, when should the controller want visiont to capture
+    if (state() == CycleState::AWAIT_RESULT)
+    {
+    }
+
     registers[REG_CYCLE_COUNT] = m_stats.cycle_count;
     registers[REG_REJECT_COUNT] = m_stats.reject_count;
     registers[REG_FAULT_COUNT] = m_stats.fault_count;
 
     registers[REG_PHOTOEYE] = m_photoeye_snapshot;
 
+    // TODO: write REG_DIVERTER_CMD and REG_DIVERTER_FEEDBACK
 }
 
 // private methods

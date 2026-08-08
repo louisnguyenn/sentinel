@@ -25,8 +25,9 @@ enum RegisterIndex
     REG_MACHINE_STATE       = 13, // controller writes: CycleState as an int
     REG_MANUAL_CONVEYOR_JOG = 14, // HMI writes (Manual mode only)
     REG_MANUAL_DIVERTER_JOG = 15, // HMI writes (Manual mode only)
+    REG_RESULT_SEQ = 16,    // vision writes: increments each time it posts a new result
 
-    REG_COUNT               = 16  // total register count — use this to size the array
+    REG_COUNT               = 17  // total register count — use this to size the array
 };
 
 } // namespace sentinel
