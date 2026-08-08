@@ -1,4 +1,5 @@
 #include "modbus_server.hpp"
+#include <iostream>
 #include <stdexcept>
 
 sentinel::ModbusServer::ModbusServer(const char* ip, int port)
@@ -15,14 +16,19 @@ sentinel::ModbusServer::ModbusServer(const char* ip, int port)
         throw std::runtime_error("Failed to allocate Modbus registers");
     }
 
-    m_server_socket = modbus_tcp_listen(m_ctx, 1);
-    if (!m_server_socket)
+    int listen_socket = modbus_tcp_listen(m_ctx, 1);
+    if (listen_socket == -1)
     {
         throw std::runtime_error("Failed to listen on Modbus TCP");
     }
 
-    // Non-blocking accept: don't freeze the whole controller while waiting for a client to connect
-    modbus_set_socket(m_ctx, m_server_socket);
+    std::cout << "ModbusServer: waiting for a client to connect on port " << port << "...\n";
+    m_server_socket = modbus_tcp_accept(m_ctx, &listen_socket);
+    if (m_server_socket == -1)
+    {
+        throw std::runtime_error("Failed to accept Modbus client");
+    }
+    std::cout << "ModbusServer: client connected.\n";
 }
 
 sentinel::ModbusServer::~ModbusServer()
