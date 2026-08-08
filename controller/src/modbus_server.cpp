@@ -27,6 +27,17 @@ sentinel::ModbusServer::ModbusServer(const char* ip, int port)
 
 sentinel::ModbusServer::~ModbusServer()
 {
+    /// Free memory
+    if (m_mapping)
+    {
+        modbus_mapping_free(m_mapping);
+    }
+
+    if (m_ctx)
+    {
+        modbus_close(m_ctx);
+        modbus_free(m_ctx);
+    }
 }
 
 void sentinel::ModbusServer::poll()
