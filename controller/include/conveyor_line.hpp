@@ -38,6 +38,9 @@ class ConveyorLine
 
     /// Conveyor motor getter
     double motorSpeedMmS();
+    
+    /// Diverter position getter
+    DiverterCylinder::Position diverterPosition() const;
 
   private:
     struct Part
