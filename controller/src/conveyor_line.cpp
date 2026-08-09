@@ -64,6 +64,7 @@ bool sentinel::ConveyorLine::diverterRetracted() const
 
 sentinel::DiverterCylinder::Position sentinel::ConveyorLine::diverterPosition() const
 {
+    return m_diverter.position();
 }
 
 /// @brief bool - true = extend, false = retract
