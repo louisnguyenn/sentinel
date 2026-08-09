@@ -34,7 +34,8 @@ enum class FaultCode
     NONE,
     ESTOP,
     VISION_TIMEOUT,
-    DIVERTER_JAM
+    DIVERTER_JAM,
+    INVALID_MODE_REQUEST
 };
 
 /// Running production counters — the numbers a plant floor cares about.
