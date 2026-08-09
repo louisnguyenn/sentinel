@@ -99,7 +99,9 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
         // ensure new baseline to avoid leftover data
         if (!m_result_seq_baseline_captured)
         {
-            // First time seeing AWAIT_RESULT since it started - track whatever sequence number is currenting stored as the baseline so leftover data from previous part cannot be mistaken as new data
+            // First time seeing AWAIT_RESULT since it started - track whatever sequence number is
+            // currenting stored as the baseline so leftover data from previous part cannot be
+            // mistaken as new data
             m_last_result_seq = registers[REG_RESULT_SEQ];
             m_result_seq_baseline_captured = true;
         }
@@ -120,18 +122,23 @@ void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) c
 {
     registers[REG_MACHINE_STATE] = static_cast<uint16_t>(state());
 
-    // TODO: populate trigger capture, when should the controller want visiont to capture
-    if (state() == CycleState::AWAIT_RESULT)
+    if (state() == CycleState::PART_DETECTED ||
+        (state() == CycleState::AWAIT_RESULT && !m_has_inspection_result))
     {
+        registers[REG_TRIGGER_CAPTURE] = 1;
+    }
+    else
+    {
+        registers[REG_TRIGGER_CAPTURE] = 0;
     }
 
     registers[REG_CYCLE_COUNT] = m_stats.cycle_count;
     registers[REG_REJECT_COUNT] = m_stats.reject_count;
     registers[REG_FAULT_COUNT] = m_stats.fault_count;
-
     registers[REG_PHOTOEYE] = m_photoeye_snapshot;
+    // registers[REG_DIVERTER_CMD]
+    // registers[REG_DIVERTER_FEEDBACK]
 
-    // TODO: write REG_DIVERTER_CMD and REG_DIVERTER_FEEDBACK
 }
 
 // private methods
@@ -169,7 +176,8 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::PART_DETECTED:
             m_has_inspection_result = false; // no result yet
-            m_result_seq_baseline_captured = false; // next readInputRegisters() call will establish a new baseline
+            m_result_seq_baseline_captured =
+                false; // next readInputRegisters() call will establish a new baseline
             m_watchdog.reset();
             m_state = CycleState::AWAIT_RESULT;
             break;
