@@ -71,7 +71,6 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
     setEstop(registers[REG_ESTOP] != 0); // return boolean
 
     // mode selection
-    // TODO: possible error logging / throw error if wrong mode is selected
     switch (registers[REG_MODE_SELECT])
     {
         case 0:
@@ -84,6 +83,9 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
 
         case 2:
             setMode(OperatingMode::MAINTENANCE);
+            break;
+        default:
+            enterFault(FaultCode::INVALID_MODE_REQUEST);
             break;
     }
 
