@@ -31,6 +31,7 @@ class ConveyorLine
     uint32_t encoderCount() const;
     bool diverterExtended() const;
     bool diverterRetracted() const;
+    DiverterCylinder::Position diverterPosition() const;
 
     // --- Actuator commands (controller calls these during outputScan) ---
     void commandDiverter(bool extend);

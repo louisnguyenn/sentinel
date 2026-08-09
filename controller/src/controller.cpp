@@ -71,7 +71,6 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
     setEstop(registers[REG_ESTOP] != 0); // return boolean
 
     // mode selection
-    // TODO: possible error logging / throw error if wrong mode is selected
     switch (registers[REG_MODE_SELECT])
     {
         case 0:
@@ -84,6 +83,9 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
 
         case 2:
             setMode(OperatingMode::MAINTENANCE);
+            break;
+        default:
+            m_invalid_mode_detected = true;
             break;
     }
 
@@ -99,7 +101,9 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
         // ensure new baseline to avoid leftover data
         if (!m_result_seq_baseline_captured)
         {
-            // First time seeing AWAIT_RESULT since it started - track whatever sequence number is currenting stored as the baseline so leftover data from previous part cannot be mistaken as new data
+            // First time seeing AWAIT_RESULT since it started - track whatever sequence number is
+            // currenting stored as the baseline so leftover data from previous part cannot be
+            // mistaken as new data
             m_last_result_seq = registers[REG_RESULT_SEQ];
             m_result_seq_baseline_captured = true;
         }
@@ -120,18 +124,22 @@ void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) c
 {
     registers[REG_MACHINE_STATE] = static_cast<uint16_t>(state());
 
-    // TODO: populate trigger capture, when should the controller want visiont to capture
-    if (state() == CycleState::AWAIT_RESULT)
+    if (state() == CycleState::PART_DETECTED ||
+        (state() == CycleState::AWAIT_RESULT && !m_has_inspection_result))
     {
+        registers[REG_TRIGGER_CAPTURE] = 1;
+    }
+    else
+    {
+        registers[REG_TRIGGER_CAPTURE] = 0;
     }
 
     registers[REG_CYCLE_COUNT] = m_stats.cycle_count;
     registers[REG_REJECT_COUNT] = m_stats.reject_count;
     registers[REG_FAULT_COUNT] = m_stats.fault_count;
-
     registers[REG_PHOTOEYE] = m_photoeye_snapshot;
-
-    // TODO: write REG_DIVERTER_CMD and REG_DIVERTER_FEEDBACK
+    registers[REG_DIVERTER_CMD] = m_last_diverter_cmd;
+    registers[REG_DIVERTER_FEEDBACK] = static_cast<uint16_t>(m_line.diverterPosition());
 }
 
 // private methods
@@ -145,6 +153,14 @@ void sentinel::Controller::inputScan()
 
 void sentinel::Controller::logicSolve()
 {
+    // check mode
+    if (m_invalid_mode_detected == true)
+    {
+        enterFault(FaultCode::INVALID_MODE_REQUEST);
+        m_invalid_mode_detected = false;
+        return;
+    }
+
     // check e-stop
     if (m_estop_active == true)
     {
@@ -169,7 +185,8 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::PART_DETECTED:
             m_has_inspection_result = false; // no result yet
-            m_result_seq_baseline_captured = false; // next readInputRegisters() call will establish a new baseline
+            m_result_seq_baseline_captured =
+                false; // next readInputRegisters() call will establish a new baseline
             m_watchdog.reset();
             m_state = CycleState::AWAIT_RESULT;
             break;
@@ -196,6 +213,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::DIVERT_REJECT:
             m_line.commandDiverter(true); // extend diverter
+            m_last_diverter_cmd = true;
 
             if (m_line.diverterExtended() == true)
             {
@@ -205,6 +223,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::DIVERT_ACCEPT:
             m_line.commandDiverter(false); // retract diverter
+            m_last_diverter_cmd = false;
 
             if (m_line.diverterRetracted() == true)
             {
@@ -236,6 +255,7 @@ void sentinel::Controller::enterFault(FaultCode code)
     m_active_fault = code;
     m_stats.fault_count++;
     m_line.commandDiverter(false);    // retract diverter
+    m_last_diverter_cmd = false;
     m_line.setConveyorRunning(false); // turn off motor
 }
 

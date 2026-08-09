@@ -34,7 +34,8 @@ enum class FaultCode
     NONE,
     ESTOP,
     VISION_TIMEOUT,
-    DIVERTER_JAM
+    DIVERTER_JAM,
+    INVALID_MODE_REQUEST
 };
 
 /// Running production counters — the numbers a plant floor cares about.
@@ -113,6 +114,10 @@ class Controller
 
     uint16_t m_last_result_seq = 0;
     bool m_result_seq_baseline_captured = false;
+
+    bool m_last_diverter_cmd = false;
+
+    bool m_invalid_mode_detected = false;
 };
 
 } // namespace sentinel

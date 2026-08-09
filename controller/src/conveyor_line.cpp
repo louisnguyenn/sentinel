@@ -62,15 +62,20 @@ bool sentinel::ConveyorLine::diverterRetracted() const
     return m_diverter.position() == sentinel::DiverterCylinder::Position::RETRACTED;
 }
 
+sentinel::DiverterCylinder::Position sentinel::ConveyorLine::diverterPosition() const
+{
+    return m_diverter.position();
+}
+
 /// @brief bool - true = extend, false = retract
-/// @param extend 
+/// @param extend
 void sentinel::ConveyorLine::commandDiverter(bool extend)
 {
     m_diverter.command(extend);
 }
 
 /// @brief bool = true = run, false = stop running (stop the motor)
-/// @param run 
+/// @param run
 void sentinel::ConveyorLine::setConveyorRunning(bool run)
 {
     m_motor.setRunning(run);
