@@ -136,9 +136,8 @@ void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) c
     registers[REG_REJECT_COUNT] = m_stats.reject_count;
     registers[REG_FAULT_COUNT] = m_stats.fault_count;
     registers[REG_PHOTOEYE] = m_photoeye_snapshot;
-    // registers[REG_DIVERTER_CMD]
+    registers[REG_DIVERTER_CMD] = m_last_diverter_cmd;
     // registers[REG_DIVERTER_FEEDBACK]
-
 }
 
 // private methods
@@ -204,6 +203,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::DIVERT_REJECT:
             m_line.commandDiverter(true); // extend diverter
+            m_last_diverter_cmd = true;
 
             if (m_line.diverterExtended() == true)
             {
@@ -213,6 +213,7 @@ void sentinel::Controller::logicSolve()
             break;
         case CycleState::DIVERT_ACCEPT:
             m_line.commandDiverter(false); // retract diverter
+            m_last_diverter_cmd = false;
 
             if (m_line.diverterRetracted() == true)
             {
