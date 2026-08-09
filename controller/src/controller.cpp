@@ -255,6 +255,7 @@ void sentinel::Controller::enterFault(FaultCode code)
     m_active_fault = code;
     m_stats.fault_count++;
     m_line.commandDiverter(false);    // retract diverter
+    m_last_diverter_cmd = false;
     m_line.setConveyorRunning(false); // turn off motor
 }
 
