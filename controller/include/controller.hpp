@@ -113,6 +113,8 @@ class Controller
 
     uint16_t m_last_result_seq = 0;
     bool m_result_seq_baseline_captured = false;
+
+    bool m_last_diverter_cmd = false;
 };
 
 } // namespace sentinel
