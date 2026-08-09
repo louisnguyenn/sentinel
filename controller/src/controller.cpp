@@ -85,7 +85,7 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
             setMode(OperatingMode::MAINTENANCE);
             break;
         default:
-            enterFault(FaultCode::INVALID_MODE_REQUEST);
+            m_invalid_mode_detected = true;
             break;
     }
 
@@ -157,6 +157,14 @@ void sentinel::Controller::logicSolve()
     if (m_estop_active == true)
     {
         enterFault(FaultCode::ESTOP);
+        return;
+    }
+
+    // check mode
+    if (m_invalid_mode_detected == true)
+    {
+        enterFault(FaultCode::INVALID_MODE_REQUEST);
+        m_invalid_mode_detected = false;
         return;
     }
 
