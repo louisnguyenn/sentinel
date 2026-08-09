@@ -116,6 +116,8 @@ class Controller
     bool m_result_seq_baseline_captured = false;
 
     bool m_last_diverter_cmd = false;
+
+    bool m_invalid_mode_detected = false;
 };
 
 } // namespace sentinel
