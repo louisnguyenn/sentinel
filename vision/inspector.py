@@ -1,5 +1,5 @@
 from pymodbus.client import ModbusTcpClient
-from defect_check import detect_surface_detect
+from defect_check import detect_surface_detect, capture_current_part_image
 import time
 
 REG_TRIGGER_CAPTURE = 2
