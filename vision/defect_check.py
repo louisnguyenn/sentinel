@@ -11,7 +11,7 @@ def capture_current_part_image() -> str:
     """
     category = random.choice(["ok", "defective"])
     folder = SAMPLE_DIR / category
-    image_path = random.choice(list(folder.glob("*.jpg")))
+    image_path = random.choice(list(folder.glob("*.jpg")) + list(Path(folder).glob("*.jpeg")))
     
     return str(image_path)
 
@@ -38,7 +38,7 @@ def evaluate_on_folder(folder: str, expected_defective: bool) -> None:
     correct = 0
     total = 0
     image_paths = list(Path(folder).glob("*.jpg")) + list(Path(folder).glob("*.jpeg"))
-    
+
     for image_path in image_paths:
         result = detect_surface_defect(str(image_path))
         total += 1
