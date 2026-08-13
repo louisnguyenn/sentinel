@@ -33,3 +33,17 @@ def detect_surface_defect(image_path:str, contour_area_threshold: float = 40.0, 
     suspicious = [c for c in contours if cv2.contourArea(c) > contour_area_threshold]
 
     return len(suspicious) > suspicious_region_threshold
+
+def evaluate_on_folder(folder: str, expected_defective: bool) -> None:
+    correct = 0
+    total = 0
+    for image_path in Path(folder).glob("*jpg"):
+        result = detect_surface_defect(str(image_path))
+        total += 1
+        if result == expected_defective:
+            correct += 1
+    print(f"{folder}: {correct}/{total} correct")
+
+if __name__ == "__main__":
+    evaluate_on_folder("../data/sample_parts/ok", expected_defective=False)
+    evaluate_on_folder("../data/sample_parts/defective", expected_defective=True)
