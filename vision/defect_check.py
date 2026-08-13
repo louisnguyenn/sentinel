@@ -37,7 +37,9 @@ def detect_surface_defect(image_path:str, contour_area_threshold: float = 40.0, 
 def evaluate_on_folder(folder: str, expected_defective: bool) -> None:
     correct = 0
     total = 0
-    for image_path in Path(folder).glob("*jpg"):
+    image_paths = list(Path(folder).glob("*.jpg")) + list(Path(folder).glob("*.jpeg"))
+    
+    for image_path in image_paths:
         result = detect_surface_defect(str(image_path))
         total += 1
         if result == expected_defective:
