@@ -34,7 +34,7 @@ logs/*.png
 *.npz
 
 ## ---- Sample data ----
-# data/sample_parts/
+data/sample_parts/
 
 ## ---- Editor / IDE ----
 .vscode/
@@ -44,3 +44,10 @@ logs/*.png
 ## ---- OS ----
 .DS_Store
 Thumbs.db
+
+## ---- Kaggle / datasets ----
+kaggle.json
+*.zip
+
+## ---- Downloaded/derived data (large, regenerable — don't commit) ----
+data/casting_raw/
