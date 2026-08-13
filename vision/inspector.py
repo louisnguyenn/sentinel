@@ -1,4 +1,5 @@
 from pymodbus.client import ModbusTcpClient
+from defect_check import detect_surface_detect
 import time
 
 REG_TRIGGER_CAPTURE = 2
@@ -18,8 +19,8 @@ while True:
     curr_trigger = registers[REG_TRIGGER_CAPTURE]
 
     if curr_trigger == 1 and prev_trigger == 0:
-        # TODO: capture/load image
-        # TODO: defective = ...
+        image_path = capture_current_part_image()
+        defective = detect_surface_detect(image_path)
 
         client.write_register(REG_INSPECTION_RESULT, int(defective))
         result_seq += 1 # track new result
