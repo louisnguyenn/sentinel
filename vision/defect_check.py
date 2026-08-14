@@ -30,7 +30,7 @@ def detect_surface_defect(image_path:str, contour_area_threshold: float = 40.0, 
     edges = cv2.Canny(blurred, 50, 150) # canny edges
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # contour count
 
-    # filter by area thresholf first, avoids counting dust particles and other tiny contours as a real defect
+    # filter by area threshold first, avoids counting dust particles and other tiny contours as a real defect
     suspicious = [c for c in contours if cv2.contourArea(c) > contour_area_threshold]
 
     return len(suspicious) > suspicious_region_threshold
@@ -74,8 +74,8 @@ def extract_features(image_path:str) -> list[float]:
     return [len(contours), max_contour_area, np.mean(img), np.std(img)]
 
 if __name__ == "__main__":
-    evaluate_on_folder("../data/sample_parts/ok", expected_defective=False)
-    evaluate_on_folder("../data/sample_parts/defective", expected_defective=True)
+    evaluate_on_folder(str(SAMPLE_DIR / "ok"), expected_defective=False)
+    evaluate_on_folder(str(SAMPLE_DIR / "defective"), expected_defective=True)
     # sample = capture_current_part_image()
     # print(sample)
     # print(extract_features(sample))
