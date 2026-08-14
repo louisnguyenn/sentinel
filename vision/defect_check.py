@@ -76,3 +76,6 @@ def extract_features(image_path:str) -> list[float]:
 if __name__ == "__main__":
     evaluate_on_folder("../data/sample_parts/ok", expected_defective=False)
     evaluate_on_folder("../data/sample_parts/defective", expected_defective=True)
+    # sample = capture_current_part_image()
+    # print(sample)
+    # print(extract_features(sample))
