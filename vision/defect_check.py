@@ -47,22 +47,32 @@ def evaluate_on_folder(folder: str, expected_defective: bool) -> None:
             correct += 1
     print(f"{folder}: {correct}/{total} correct")
 
-if __name__ == "__main__":
-    evaluate_on_folder("../data/sample_parts/ok", expected_defective=False)
-    evaluate_on_folder("../data/sample_parts/defective", expected_defective=True)
-
 def extract_features(image_path:str) -> list[float]:
     """
     Turns one image into a handful of numeric features for a classical ML classifier.
     """
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        raise FileNotFoundError(f"Could not read image: {image_path}")
+
     blurred = cv2.GaussianBlur(img, (5, 5), 0)
     edges = cv2.Canny(blurred, 50, 150)
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    # TODO: compute and return a small list of numbers describing this image, e.g.:
     #   - number of contours found
     #   - the largest single contour's area
     #   - the mean pixel intensity of the whole image
     #   - the standard deviation of pixel intensity (texture roughness)
-    
+    if len(contours) > 0:
+        contour_area = []
+        for c in contours:
+            contour_area.append(cv2.contourArea(c))
+        max_contour_area = max(contour_area) # find largest contour area
+    else:
+        max_contour_area = 0 # no defects, scratches, etc.
+
+    return [len(contours), max_contour_area, np.mean(img), np.std(img)]
+
+if __name__ == "__main__":
+    evaluate_on_folder("../data/sample_parts/ok", expected_defective=False)
+    evaluate_on_folder("../data/sample_parts/defective", expected_defective=True)
