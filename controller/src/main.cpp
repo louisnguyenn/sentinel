@@ -80,7 +80,9 @@
 #include "controller.hpp"
 #include "conveyor_line.hpp"
 #include "modbus_server.hpp"
+#include <chrono>
 #include <iostream>
+#include <thread>
 
 int main()
 {
@@ -96,8 +98,13 @@ int main()
     uint16_t fake_heartbeat = 0;
     bool second_part_spawned = false;
 
+    int tick_count = 0;
+    sentinel::CycleState last_printed_state = controller.state();
+
     for (;;)
     {
+        auto scan_start = std::chrono::steady_clock::now();
+
         modbus.poll();
         controller.readInputRegisters(modbus.registers());
 
@@ -105,6 +112,26 @@ int main()
         controller.tick(dt);
 
         controller.writeOutputRegisters(modbus.registers());
+
+        if (controller.state() != last_printed_state)
+        {
+            std::cout << "tick " << tick_count << ": state changed to "
+                      << static_cast<int>(controller.state()) << "\n";
+            last_printed_state = controller.state();
+        }
+
+        if (++tick_count % 100 == 0)
+        {
+            std::cout << "tick " << tick_count << ": state=" << static_cast<int>(controller.state())
+                      << " cycles=" << controller.stats().cycle_count << "\n";
+        }
+
+        auto elapsed = std::chrono::steady_clock::now() - scan_start;
+        auto target = std::chrono::duration<double>(dt);
+        if (elapsed < target)
+        {
+            std::this_thread::sleep_for(target - elapsed);
+        }
     }
 
     return 0;
