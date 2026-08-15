@@ -77,14 +77,25 @@ def extract_features(image_path:str) -> list[float]:
     return [len(contours), max_contour_area, np.mean(img), np.std(img)]
 
 def _load_model():
-    global _model
+    global _model   # load model once globally
     if _model is None:
         import joblib
         if not _MODEL_PATH.exists():
             raise FileNotFoundError(f"No trained model found at {_MODEL_PATH}. Run train_classifier.py first.")
         _model = joblib.load(_MODEL_PATH)
-        
+
     return _model
+
+def classify_with_model(image_path: str) -> bool:
+    """
+    ML-based defect check: extracts the same features as the classical
+    pipeline, but lets the trained Random Forest make the decision.
+    """
+    model = _load_model()
+    features = extract_features(image_path)
+    prediction = model.predict(features)
+
+    return bool(prediction)
 
 if __name__ == "__main__":
     evaluate_on_folder(str(SAMPLE_DIR / "ok"), expected_defective=False)
