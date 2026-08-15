@@ -93,7 +93,7 @@ def classify_with_model(image_path: str) -> bool:
     """
     model = _load_model()
     features = extract_features(image_path)
-    prediction = model.predict(features)
+    prediction = model.predict([features])[0]
 
     return bool(prediction)
 
