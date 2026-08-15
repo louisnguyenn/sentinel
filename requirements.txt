@@ -179,6 +179,7 @@ shape_msgs==5.9.2
 simulation_interfaces==2.1.0
 six==1.17.0
 sros2==0.16.6
+statistics_msgs==2.4.5
 std_msgs==5.9.2
 std_srvs==5.9.2
 stereo_msgs==5.9.2
