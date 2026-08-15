@@ -24,7 +24,7 @@ while True:
     curr_trigger = registers[REG_TRIGGER_CAPTURE]
 
     if curr_trigger == 1 and prev_trigger == 0:
-        print("Trigger detected - captuing and classifying...")
+        print("Trigger detected - capturing and classifying...")
         image_path = capture_current_part_image()
         defective = classify_with_model(image_path)
         print(f"    {image_path} -> defective={defective}")
