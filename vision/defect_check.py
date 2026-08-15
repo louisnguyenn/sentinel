@@ -2,6 +2,7 @@ import random
 from pathlib import Path
 import cv2
 import numpy as np
+from collections import Counter
 
 SAMPLE_DIR = Path(__file__).parent.parent / "data" / "sample_parts"
 
@@ -76,6 +77,14 @@ def extract_features(image_path:str) -> list[float]:
 if __name__ == "__main__":
     evaluate_on_folder(str(SAMPLE_DIR / "ok"), expected_defective=False)
     evaluate_on_folder(str(SAMPLE_DIR / "defective"), expected_defective=True)
+
+    for label, folder in [("ok", SAMPLE_DIR / "ok"), ("defective", SAMPLE_DIR / "defective")]:
+        paths = list(folder.glob("*.jpg")) + list(folder.glob("*.jpeg"))
+        sample = random.sample(paths, 10)
+        print(f"\n--- {label} ---")
+        for p in sample:
+            print(extract_features(str(p)))
+
     # sample = capture_current_part_image()
     # print(sample)
     # print(extract_features(sample))
