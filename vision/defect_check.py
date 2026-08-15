@@ -2,8 +2,11 @@ import random
 from pathlib import Path
 import cv2
 import numpy as np
+from collections import Counter
 
 SAMPLE_DIR = Path(__file__).parent.parent / "data" / "sample_parts"
+_MODEL_PATH = Path(__file__).parent / "detect_classifier.joblib"
+_model = None
 
 def capture_current_part_image() -> str:
     """
@@ -73,9 +76,38 @@ def extract_features(image_path:str) -> list[float]:
 
     return [len(contours), max_contour_area, np.mean(img), np.std(img)]
 
+def _load_model():
+    global _model   # load model once globally
+    if _model is None:
+        import joblib
+        if not _MODEL_PATH.exists():
+            raise FileNotFoundError(f"No trained model found at {_MODEL_PATH}. Run train_classifier.py first.")
+        _model = joblib.load(_MODEL_PATH)
+
+    return _model
+
+def classify_with_model(image_path: str) -> bool:
+    """
+    ML-based defect check: extracts the same features as the classical
+    pipeline, but lets the trained Random Forest make the decision.
+    """
+    model = _load_model()
+    features = extract_features(image_path)
+    prediction = model.predict([features])[0]
+
+    return bool(prediction)
+
 if __name__ == "__main__":
     evaluate_on_folder(str(SAMPLE_DIR / "ok"), expected_defective=False)
     evaluate_on_folder(str(SAMPLE_DIR / "defective"), expected_defective=True)
+
+    for label, folder in [("ok", SAMPLE_DIR / "ok"), ("defective", SAMPLE_DIR / "defective")]:
+        paths = list(folder.glob("*.jpg")) + list(folder.glob("*.jpeg"))
+        sample = random.sample(paths, 10)
+        print(f"\n--- {label} ---")
+        for p in sample:
+            print(extract_features(str(p)))
+
     # sample = capture_current_part_image()
     # print(sample)
     # print(extract_features(sample))

@@ -51,3 +51,6 @@ kaggle.json
 
 ## ---- Downloaded/derived data (large, regenerable — don't commit) ----
 data/casting_raw/
+
+## ---- Train/Test classifier ----
+*.joblib
