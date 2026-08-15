@@ -5,6 +5,8 @@ import numpy as np
 from collections import Counter
 
 SAMPLE_DIR = Path(__file__).parent.parent / "data" / "sample_parts"
+_MODEL_PATH = Path(__file__).parent / "detect_classifier.joblib"
+_model = None
 
 def capture_current_part_image() -> str:
     """
@@ -73,6 +75,16 @@ def extract_features(image_path:str) -> list[float]:
         max_contour_area = 0 # no defects, scratches, etc.
 
     return [len(contours), max_contour_area, np.mean(img), np.std(img)]
+
+def _load_model():
+    global _model
+    if _model is None:
+        import joblib
+        if not _MODEL_PATH.exists():
+            raise FileNotFoundError(f"No trained model found at {_MODEL_PATH}. Run train_classifier.py first.")
+        _model = joblib.load(_MODEL_PATH)
+        
+    return _model
 
 if __name__ == "__main__":
     evaluate_on_folder(str(SAMPLE_DIR / "ok"), expected_defective=False)
