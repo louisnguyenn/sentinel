@@ -1,8 +1,8 @@
 #include "modbus_server.hpp"
+#include <algorithm>
 #include <iostream>
 #include <stdexcept>
 #include <sys/select.h>
-#include <algorithm>
 
 sentinel::ModbusServer::ModbusServer(const char* ip, int port)
 {
@@ -28,6 +28,11 @@ sentinel::ModbusServer::ModbusServer(const char* ip, int port)
 sentinel::ModbusServer::~ModbusServer()
 {
     /// Free memory
+    for (int socket : m_client_sockets)
+    {
+        modbus_close(m_ctx);
+    }
+    
     if (m_mapping)
     {
         modbus_mapping_free(m_mapping);
