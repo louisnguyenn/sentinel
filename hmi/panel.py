@@ -40,8 +40,7 @@ def poll_and_update():
     # update state with state names
     state_label.config(text=STATE_NAMES.get(registers[REG_MACHINE_STATE], "UNKNOWN"))
 
-    # TODO: read cycle/reject/fault counts and update counts_label the
-    # same way
+    counts_label.config(text=f"Cycle: {registers[REG_CYCLE_COUNT]}   Reject: {registers[REG_REJECT_COUNT]}   Fault: {registers[REG_FAULT_COUNT]}")
 
     root.after(200, poll_and_update) # schedule this same function again in 200ms
 
