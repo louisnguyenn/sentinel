@@ -20,19 +20,27 @@ root.title("Sentinel - Operator Panel")
 root.geometry("400x300")
 
 state_label = tk.Label(root, text="STATE: -", font=("Courier, 16"))
-state_label.pack(pady=10)
+state_label.pack(pady=10)   # create widget with vertical padding of 10
 
 counts_label = tk.Label(root, text="Cycle: 0   Reject: 0   Fault: 0", font=("Courier", 12))
-counts_label.pack(pady=5)
+counts_label.pack(pady=5)   # create width with padding y of 5
 
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
-    # TODO: decode registers[REG_MACHINE_STATE] into a human-readable
-    # string and set it on state_label using state_label.config(text=...)
+    STATE_NAMES = {
+        0: "IDLE",
+        1: "PART_DETECTED",
+        2: "AWAIT_RESULT",
+        3: "DIVERT_ACCEPT",
+        4: "DIVERT_REJECT",
+        5: "FAULT"
+    }
 
-    # TODO: read cycle/reject/fault counts and update counts_label the
-    # same way
+    # update state with state names
+    state_label.config(text=STATE_NAMES.get(registers[REG_MACHINE_STATE], "UNKNOWN"))
+
+    counts_label.config(text=f"Cycle: {registers[REG_CYCLE_COUNT]}   Reject: {registers[REG_REJECT_COUNT]}   Fault: {registers[REG_FAULT_COUNT]}")
 
     root.after(200, poll_and_update) # schedule this same function again in 200ms
 
