@@ -29,6 +29,13 @@ status_banner = tk.Label(root, text="AUTO", bg="green", fg="white",
                            font=("Courier", 18, "bold"), width=20)
 status_banner.pack(pady=10)
 
+def on_estop_click():
+    client.write_register(REG_ESTOP, 1)
+
+estop_button = tk.Button(root, text="E-STOP", bg="red", fg="white",
+                           font=("Courier", 16, "bold"), command=on_estop_click)
+estop_button.pack(pady=10)
+
 def get_status_banner(state: int, mode: int) -> tuple[str, str]:
     """Returns (label_text, background_color)."""
     if state == 5:
