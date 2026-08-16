@@ -45,20 +45,68 @@ sentinel::ModbusServer::~ModbusServer()
     }
 }
 
-// TODO: refactor poll to take more than one connected client
 void sentinel::ModbusServer::poll()
 {
-    uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
+    // Build the set of sockets we want to watch: the listening socket
+    // (for new connections) plus every currently connected client.
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    FD_SET(m_listen_socket, &read_fds);
+    int max_fd = m_listen_socket;
 
-    /// Checks if there is a request
-    /// Returns 0 if not request
-    int rc = modbus_receive(m_ctx, query);
-
-    // rc == 0: no request pending this tick - not an error
-    // rc > 0: an error occured - log error
-    if (rc > 0)
+    for (int sock : m_client_sockets)
     {
-        modbus_reply(m_ctx, query, rc, m_mapping); // Answers whatever request came in
+        FD_SET(sock, &read_fds);
+        max_fd = std::max(max_fd, sock);
+    }
+
+    // Don't block at all — return immediately with whatever's ready
+    // right now, since poll() is called once per scan cycle.
+    timeval timeout{0, 0};
+    int ready = select(max_fd + 1, &read_fds, nullptr, nullptr, &timeout);
+    if (ready <= 0)
+    {
+        return; // nothing to do this cycle
+    }
+
+    // New client trying to connect?
+    if (FD_ISSET(m_listen_socket, &read_fds))
+    {
+        int new_socket = modbus_tcp_accept(m_ctx, &m_listen_socket);
+        if (new_socket != -1)
+        {
+            m_client_sockets.push_back(new_socket);
+            std::cout << "ModbusServer: client connected (fd=" << new_socket
+                      << ", total clients=" << m_client_sockets.size() << ")\n";
+        }
+    }
+
+    // Service any existing client that has a request pending.
+    for (auto it = m_client_sockets.begin(); it != m_client_sockets.end();)
+    {
+        if (FD_ISSET(*it, &read_fds))
+        {
+            modbus_set_socket(m_ctx, *it);
+
+            uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
+            int rc = modbus_receive(m_ctx, query);
+            if (rc > 0)
+            {
+                modbus_reply(m_ctx, query, rc, m_mapping);
+                ++it;
+            }
+            else
+            {
+                // Client disconnected — stop tracking it.
+                modbus_close(m_ctx);
+                std::cout << "ModbusServer: client disconnected (fd=" << *it << ")\n";
+                it = m_client_sockets.erase(it);
+            }
+        }
+        else
+        {
+            ++it;
+        }
     }
 }
 
