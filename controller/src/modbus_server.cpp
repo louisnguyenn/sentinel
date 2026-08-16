@@ -1,6 +1,8 @@
 #include "modbus_server.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <sys/select.h>
+#include <algorithm>
 
 sentinel::ModbusServer::ModbusServer(const char* ip, int port)
 {
@@ -16,19 +18,11 @@ sentinel::ModbusServer::ModbusServer(const char* ip, int port)
         throw std::runtime_error("Failed to allocate Modbus registers");
     }
 
-    int listen_socket = modbus_tcp_listen(m_ctx, 1);
-    if (listen_socket == -1)
+    m_listen_socket = modbus_tcp_listen(m_ctx, 5); // allow up to 5 connected clients
+    if (m_listen_socket == -1)
     {
         throw std::runtime_error("Failed to listen on Modbus TCP");
     }
-
-    std::cout << "ModbusServer: waiting for a client to connect on port " << port << "...\n";
-    m_server_socket = modbus_tcp_accept(m_ctx, &listen_socket);
-    if (m_server_socket == -1)
-    {
-        throw std::runtime_error("Failed to accept Modbus client");
-    }
-    std::cout << "ModbusServer: client connected.\n";
 }
 
 sentinel::ModbusServer::~ModbusServer()
