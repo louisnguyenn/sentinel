@@ -29,6 +29,17 @@ status_banner = tk.Label(root, text="AUTO", bg="green", fg="white",
                            font=("Courier", 18, "bold"), width=20)
 status_banner.pack(pady=10)
 
+def get_status_banner(state: int, mode: int) -> tuple[str, str]:
+    """Returns (label_text, background_color)."""
+    if state == 5:
+        return ("FAULT", "red")
+    elif mode == 0:
+        return ("AUTO", "green")
+    elif mode == 1:
+        return ("MANUAL", "orange")
+    elif mode == 2:
+        return ("MAINTENANCE", "yellow")
+    
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
@@ -53,9 +64,3 @@ def poll_and_update():
 
 poll_and_update()
 root.mainloop()
-
-def get_status_banner(state: int, mode: int) -> tuple[str, str]:
-    """Returns (label_text, background_color)."""
-    # TODO: FAULT state (5) should win regardless of mode — red
-    # TODO: otherwise, mode == 0 (AUTO) — green
-    # TODO: otherwise (MANUAL or MAINTENANCE) — orange/yellow
