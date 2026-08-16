@@ -95,6 +95,16 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
         requestFaultReset();
     }
 
+    // jogging conveyor
+    if (m_mode == OperatingMode::MANUAL)
+    {
+        m_line.jogConveyor(registers[REG_MANUAL_CONVEYOR_JOG] != 0);
+    }
+    else
+    {
+        m_line.jogConveyor(false); // never jogging outside of Manual mode
+    }
+
     // inspection result
     if (m_state == CycleState::AWAIT_RESULT)
     {
@@ -254,7 +264,7 @@ void sentinel::Controller::enterFault(FaultCode code)
     m_state = CycleState::FAULT;
     m_active_fault = code;
     m_stats.fault_count++;
-    m_line.commandDiverter(false);    // retract diverter
+    m_line.commandDiverter(false); // retract diverter
     m_last_diverter_cmd = false;
     m_line.setConveyorRunning(false); // turn off motor
 }
