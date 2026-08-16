@@ -32,7 +32,7 @@ sentinel::ModbusServer::~ModbusServer()
     {
         modbus_close(m_ctx);
     }
-    
+
     if (m_mapping)
     {
         modbus_mapping_free(m_mapping);
@@ -45,6 +45,7 @@ sentinel::ModbusServer::~ModbusServer()
     }
 }
 
+// TODO: refactor poll to take more than one connected client
 void sentinel::ModbusServer::poll()
 {
     uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
