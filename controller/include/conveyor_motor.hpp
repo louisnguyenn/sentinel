@@ -23,6 +23,7 @@ class ConveyorMotor
     bool m_running = false;
     double m_current_speed_mm_s = 0.0;
     bool m_jogging = false;
+    const double m_jogging_speed_mm_s{50.0};
 };
 
 } // namespace sentinel
