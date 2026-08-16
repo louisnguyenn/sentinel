@@ -11,6 +11,7 @@ class ConveyorMotor
     ConveyorMotor(double rated_speed_mm_s = 200.0, double accel_mm_s2 = 500.0);
 
     void setRunning(bool run);
+    void setJogging(bool jogging);
     void update(double dt_s);
 
     double currentSpeedMmS() const;
@@ -21,6 +22,8 @@ class ConveyorMotor
     double m_accel_mm_s2;
     bool m_running = false;
     double m_current_speed_mm_s = 0.0;
+    bool m_jogging = false;
+    const double m_jogging_speed_mm_s{50.0};
 };
 
 } // namespace sentinel

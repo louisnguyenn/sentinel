@@ -18,7 +18,18 @@ void sentinel::ConveyorMotor::update(double dt_s)
     double target_speed{};
     double max_delta_this_tick{};
 
-    m_running ? target_speed = m_rated_speed_mm_s : target_speed = 0.0;
+    if (m_running && m_jogging)
+    {
+        target_speed = m_jogging_speed_mm_s;
+    }
+    else if (m_running)
+    {
+        target_speed = m_rated_speed_mm_s;
+    }
+    else
+    {
+        target_speed = 0.0;
+    }
 
     max_delta_this_tick = m_accel_mm_s2 * dt_s; // calculate displacement
 

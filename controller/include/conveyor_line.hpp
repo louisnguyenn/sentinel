@@ -37,6 +37,9 @@ class ConveyorLine
     void commandDiverter(bool extend);
     void setConveyorRunning(bool run);
 
+    /// Jog conveyor
+    void jogConveyor(bool jogging);
+
     /// Conveyor motor getter
     double motorSpeedMmS();
 
