@@ -7,6 +7,7 @@ REG_REJECT_COUNT = 11
 REG_FAULT_COUNT = 12
 REG_MODE_SELECT = 7
 REG_ESTOP = 8
+REG_MANUAL_CONVEYOR_JOG = 14
 
 client = ModbusTcpClient(host="localhost", port=5020)
 connected = client.connect()
@@ -35,6 +36,17 @@ def on_estop_click():
 estop_button = tk.Button(root, text="E-STOP", bg="red", fg="white",
                            font=("Courier", 16, "bold"), command=on_estop_click)
 estop_button.pack(pady=10)
+
+def on_jog_press(event):
+    client.write_register(REG_MANUAL_CONVEYOR_JOG, 1)
+
+def on_jog_release(event):
+    client.write_register(REG_MANUAL_CONVEYOR_JOG, 0)
+
+jog_button = tk.Button(root, text="JOG CONVEYOR", font=("Courier", 14))
+jog_button.pack(pady=10)
+jog_button.bind("<ButtonPress-1>", on_jog_press)
+jog_button.bind("<ButtonRelease-1>", on_jog_release)
 
 def get_status_banner(state: int, mode: int) -> tuple[str, str]:
     """Returns (label_text, background_color)."""
