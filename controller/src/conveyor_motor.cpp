@@ -20,7 +20,7 @@ void sentinel::ConveyorMotor::update(double dt_s)
 
     if (m_running && m_jogging)
     {
-        target_speed = 10;
+        target_speed = m_jogging_speed_mm_s;
     }
     else if (m_running)
     {
