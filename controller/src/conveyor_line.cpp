@@ -1,6 +1,6 @@
 #include "conveyor_line.hpp"
 
-// public
+// public methods
 // constuctor
 sentinel::ConveyorLine::ConveyorLine() = default;
 
@@ -81,12 +81,17 @@ void sentinel::ConveyorLine::setConveyorRunning(bool run)
     m_motor.setRunning(run);
 }
 
+void sentinel::ConveyorLine::jogConveyor(bool jogging)
+{
+    m_motor.setJogging(jogging);
+}
+
 double sentinel::ConveyorLine::motorSpeedMmS()
 {
     return m_motor.currentSpeedMmS();
 }
 
-// private
+// private methods
 bool sentinel::ConveyorLine::anyPartInInspectionZone() const
 {
     double window{10}; // 10mm window around inspection zone
