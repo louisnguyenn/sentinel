@@ -58,7 +58,14 @@ def get_status_banner(state: int, mode: int) -> tuple[str, str]:
         return ("MANUAL", "orange")
     elif mode == 2:
         return ("MAINTENANCE", "yellow")
-    
+
+def on_estop_release():
+    client.write_register(REG_ESTOP, 0)
+
+estop_release_button = tk.Button(root, text="RELEASE E-STOP", bg="gray", fg="white", font=("Courier", 12), command=on_estop_release)
+
+estop_release_button.pack(pady=5)
+
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
