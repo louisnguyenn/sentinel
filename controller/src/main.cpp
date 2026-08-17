@@ -50,7 +50,12 @@ int main()
         if (controller.state() != last_printed_state)
         {
             std::cout << "tick " << tick_count << ": state changed to "
-                      << static_cast<int>(controller.state()) << "\n";
+                      << static_cast<int>(controller.state());
+            if (controller.state() == sentinel::CycleState::FAULT)
+            {
+                std::cout << " (fault code=" << static_cast<int>(controller.activeFault()) << ")";
+            }
+            std::cout << "\n";
             last_printed_state = controller.state();
         }
 
