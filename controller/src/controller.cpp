@@ -5,7 +5,7 @@ sentinel::Controller::Controller(ConveyorLine& line) : m_line{line}
 {
 }
 
-/// @brief entry point - runs full scan cycle in order: input → decide → output → bookkeeping
+/// @brief entry point - runs full scan cycle in order: input (inputScan) → decide (logicSolve) → output (outputScan) → housekeeping
 /// @param dt_s
 void sentinel::Controller::tick(double dt_s)
 {
