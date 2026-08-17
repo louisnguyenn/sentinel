@@ -7,6 +7,7 @@ REG_REJECT_COUNT = 11
 REG_FAULT_COUNT = 12
 REG_MODE_SELECT = 7
 REG_ESTOP = 8
+REG_RESET_FAULT = 9
 REG_MANUAL_CONVEYOR_JOG = 14
 
 client = ModbusTcpClient(host="localhost", port=5020)
@@ -65,6 +66,13 @@ def on_estop_release():
 estop_release_button = tk.Button(root, text="RELEASE E-STOP", bg="gray", fg="white", font=("Courier", 12), command=on_estop_release)
 
 estop_release_button.pack(pady=5)
+
+def on_reset_fault():
+        client.write_register(REG_RESET_FAULT, 1)
+
+reset_button = tk.Button(root, text="RESET FAULT", bg="gray", fg="white", font=("Courier", 12), command=on_reset_fault)
+
+reset_button.pack(pady=5)
 
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
