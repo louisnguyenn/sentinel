@@ -13,6 +13,12 @@ void sentinel::ConveyorMotor::setRunning(bool run)
     m_running = run;
 }
 
+void sentinel::ConveyorMotor::setJogging(bool jogging)
+{
+    m_jogging = jogging;
+}
+
+
 void sentinel::ConveyorMotor::update(double dt_s)
 {
     double target_speed{};
