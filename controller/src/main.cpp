@@ -14,7 +14,7 @@ int main()
     sentinel::Controller controller(line);
 
     line.setConveyorRunning(true);
-    line.spawnPart();
+    // line.spawnPart();
 
     const double dt = 0.01;
     uint16_t fake_heartbeat = 0;
@@ -22,6 +22,10 @@ int main()
 
     const double spawn_interval_s = 3.0; // try to introduce a new part every 3 simulated seconds
     double time_since_last_spawn = 0.0;
+
+    const double startup_delay_s = 5.0;
+    bool first_part_spawned = false;
+    double elapsed_s = 0.0;
 
     sentinel::CycleState last_printed_state = controller.state();
     int tick_count = 0;
@@ -33,9 +37,17 @@ int main()
         modbus.poll();
         controller.readInputRegisters(modbus.registers());
 
+        elapsed_s += dt;
+        if (!first_part_spawned && elapsed_s >= startup_delay_s)
+        {
+            line.spawnPart();
+            first_part_spawned = true;
+            std::cout << "Spawned first part after startup delay.\n";
+        }
+
         time_since_last_spawn += dt;
         if (time_since_last_spawn >= spawn_interval_s &&
-            controller.state() == sentinel::CycleState::IDLE)
+            controller.state() == sentinel::CycleState::IDLE && first_part_spawned == true)
         {
             line.spawnPart();
             time_since_last_spawn = 0.0;
