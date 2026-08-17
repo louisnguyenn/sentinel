@@ -86,7 +86,7 @@ void sentinel::ConveyorLine::jogConveyor(bool jogging)
     m_motor.setJogging(jogging);
 }
 
-double sentinel::ConveyorLine::motorSpeedMmS()
+double sentinel::ConveyorLine::motorSpeedMmS() const
 {
     return m_motor.currentSpeedMmS();
 }
