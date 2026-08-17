@@ -96,13 +96,13 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
     }
 
     // jogging conveyor
-    if (m_mode == OperatingMode::MANUAL)
+    if (m_mode == OperatingMode::MANUAL && m_active_fault == FaultCode::NONE)
     {
         m_line.jogConveyor(registers[REG_MANUAL_CONVEYOR_JOG] != 0);
     }
     else
     {
-        m_line.jogConveyor(false); // never jogging outside of Manual mode
+        m_line.jogConveyor(false); // never jogging outside of Manual mode and active fault
     }
 
     // inspection result
