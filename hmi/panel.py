@@ -64,14 +64,12 @@ def on_estop_release():
     client.write_register(REG_ESTOP, 0)
 
 estop_release_button = tk.Button(root, text="RELEASE E-STOP", bg="gray", fg="white", font=("Courier", 12), command=on_estop_release)
-
 estop_release_button.pack(pady=5)
 
 def on_reset_fault():
         client.write_register(REG_RESET_FAULT, 1)
 
 reset_button = tk.Button(root, text="RESET FAULT", bg="gray", fg="white", font=("Courier", 12), command=on_reset_fault)
-
 reset_button.pack(pady=5)
 
 def poll_and_update():
