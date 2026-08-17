@@ -261,6 +261,12 @@ void sentinel::Controller::housekeeping()
 
 void sentinel::Controller::enterFault(FaultCode code)
 {
+    // check if already in fault
+    if (m_state == CycleState::FAULT)
+    {
+        return;
+    }
+
     m_state = CycleState::FAULT;
     m_active_fault = code;
     m_stats.fault_count++;
