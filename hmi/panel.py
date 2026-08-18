@@ -99,7 +99,7 @@ def highlight_active_mode(active_mode: int):
             button.config(bg="lightblue")
         else:
             button.config(bg="SystemButtonFace")  # Tkinter's default button color
-            
+
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
@@ -118,6 +118,7 @@ def poll_and_update():
     counts_label.config(text=f"Cycle: {registers[REG_CYCLE_COUNT]}   Reject: {registers[REG_REJECT_COUNT]}   Fault: {registers[REG_FAULT_COUNT]}")
 
     text, color = get_status_banner(registers[REG_MACHINE_STATE], registers[REG_MODE_SELECT])
+    highlight_active_mode(registers[REG_MODE_SELECT])
     status_banner.config(text=text, bg=color)
 
     root.after(200, poll_and_update) # schedule this same function again in 200ms
