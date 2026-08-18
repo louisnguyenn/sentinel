@@ -91,6 +91,15 @@ maintenance_button = tk.Button(mode_frame, text="MAINTENANCE", width=10,
                                  command=lambda: set_mode(2))
 maintenance_button.pack(side="left", padx=5)
 
+mode_buttons = {0: auto_button, 1: manual_button, 2: maintenance_button}
+
+def highlight_active_mode(active_mode: int):
+    for mode_value, button in mode_buttons.items():
+        if mode_value == active_mode:
+            button.config(bg="lightblue")
+        else:
+            button.config(bg="SystemButtonFace")  # Tkinter's default button color
+            
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
