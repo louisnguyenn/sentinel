@@ -72,6 +72,25 @@ def on_reset_fault():
 reset_button = tk.Button(root, text="RESET FAULT", bg="gray", fg="white", font=("Courier", 12), command=on_reset_fault)
 reset_button.pack(pady=5)
 
+def set_mode(mode_value: int):
+    client.write_register(REG_MODE_SELECT, mode_value)
+
+# container widget - buttons side by side
+mode_frame = tk.Frame(root)
+mode_frame.pack(pady=10)
+
+auto_button = tk.Button(mode_frame, text="AUTO", width=10,
+                          command=lambda: set_mode(0))
+auto_button.pack(side="left", padx=5)
+
+manual_button = tk.Button(mode_frame, text="MANUAL", width=10,
+                            command=lambda: set_mode(1))
+manual_button.pack(side="left", padx=5)
+
+maintenance_button = tk.Button(mode_frame, text="MAINTENANCE", width=10,
+                                 command=lambda: set_mode(2))
+maintenance_button.pack(side="left", padx=5)
+
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
