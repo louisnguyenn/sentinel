@@ -41,7 +41,7 @@ class ConveyorLine
     void jogConveyor(bool jogging);
 
     /// Conveyor motor getter
-    double motorSpeedMmS();
+    double motorSpeedMmS() const;
 
   private:
     struct Part

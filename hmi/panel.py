@@ -7,6 +7,7 @@ REG_REJECT_COUNT = 11
 REG_FAULT_COUNT = 12
 REG_MODE_SELECT = 7
 REG_ESTOP = 8
+REG_RESET_FAULT = 9
 REG_MANUAL_CONVEYOR_JOG = 14
 
 client = ModbusTcpClient(host="localhost", port=5020)
@@ -58,7 +59,47 @@ def get_status_banner(state: int, mode: int) -> tuple[str, str]:
         return ("MANUAL", "orange")
     elif mode == 2:
         return ("MAINTENANCE", "yellow")
-    
+
+def on_estop_release():
+    client.write_register(REG_ESTOP, 0)
+
+estop_release_button = tk.Button(root, text="RELEASE E-STOP", bg="gray", fg="white", font=("Courier", 12), command=on_estop_release)
+estop_release_button.pack(pady=5)
+
+def on_reset_fault():
+        client.write_register(REG_RESET_FAULT, 1)
+
+reset_button = tk.Button(root, text="RESET FAULT", bg="gray", fg="white", font=("Courier", 12), command=on_reset_fault)
+reset_button.pack(pady=5)
+
+def set_mode(mode_value: int):
+    client.write_register(REG_MODE_SELECT, mode_value)
+
+# container widget - buttons side by side
+mode_frame = tk.Frame(root)
+mode_frame.pack(pady=10)
+
+auto_button = tk.Button(mode_frame, text="AUTO", width=10,
+                          command=lambda: set_mode(0))
+auto_button.pack(side="left", padx=5)
+
+manual_button = tk.Button(mode_frame, text="MANUAL", width=10,
+                            command=lambda: set_mode(1))
+manual_button.pack(side="left", padx=5)
+
+maintenance_button = tk.Button(mode_frame, text="MAINTENANCE", width=10,
+                                 command=lambda: set_mode(2))
+maintenance_button.pack(side="left", padx=5)
+
+mode_buttons = {0: auto_button, 1: manual_button, 2: maintenance_button}
+
+def highlight_active_mode(active_mode: int):
+    for mode_value, button in mode_buttons.items():
+        if mode_value == active_mode:
+            button.config(bg="lightblue")
+        else:
+            button.config(bg="SystemButtonFace")  # Tkinter's default button color
+
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
 
@@ -77,6 +118,7 @@ def poll_and_update():
     counts_label.config(text=f"Cycle: {registers[REG_CYCLE_COUNT]}   Reject: {registers[REG_REJECT_COUNT]}   Fault: {registers[REG_FAULT_COUNT]}")
 
     text, color = get_status_banner(registers[REG_MACHINE_STATE], registers[REG_MODE_SELECT])
+    highlight_active_mode(registers[REG_MODE_SELECT])
     status_banner.config(text=text, bg=color)
 
     root.after(200, poll_and_update) # schedule this same function again in 200ms

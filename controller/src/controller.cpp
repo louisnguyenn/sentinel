@@ -5,7 +5,7 @@ sentinel::Controller::Controller(ConveyorLine& line) : m_line{line}
 {
 }
 
-/// @brief entry point - runs full scan cycle in order: input → decide → output → bookkeeping
+/// @brief entry point - runs full scan cycle in order: input (inputScan) → decide (logicSolve) → output (outputScan) → housekeeping
 /// @param dt_s
 void sentinel::Controller::tick(double dt_s)
 {
@@ -96,13 +96,13 @@ void sentinel::Controller::readInputRegisters(const uint16_t registers[REG_COUNT
     }
 
     // jogging conveyor
-    if (m_mode == OperatingMode::MANUAL)
+    if (m_mode == OperatingMode::MANUAL && m_active_fault == FaultCode::NONE)
     {
         m_line.jogConveyor(registers[REG_MANUAL_CONVEYOR_JOG] != 0);
     }
     else
     {
-        m_line.jogConveyor(false); // never jogging outside of Manual mode
+        m_line.jogConveyor(false); // never jogging outside of Manual mode and active fault
     }
 
     // inspection result
@@ -261,6 +261,12 @@ void sentinel::Controller::housekeeping()
 
 void sentinel::Controller::enterFault(FaultCode code)
 {
+    // check if already in fault
+    if (m_state == CycleState::FAULT)
+    {
+        return;
+    }
+
     m_state = CycleState::FAULT;
     m_active_fault = code;
     m_stats.fault_count++;
