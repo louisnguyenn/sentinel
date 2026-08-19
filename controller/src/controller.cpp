@@ -5,7 +5,8 @@ sentinel::Controller::Controller(ConveyorLine& line) : m_line{line}
 {
 }
 
-/// @brief entry point - runs full scan cycle in order: input (inputScan) → decide (logicSolve) → output (outputScan) → housekeeping
+/// @brief entry point - runs full scan cycle in order: input (inputScan) → decide (logicSolve) →
+/// output (outputScan) → housekeeping
 /// @param dt_s
 void sentinel::Controller::tick(double dt_s)
 {
@@ -178,6 +179,16 @@ void sentinel::Controller::logicSolve()
         return;
     }
 
+    if (m_state == CycleState::FAULT)
+    {
+        if (m_fault_reset_requested)
+        {
+            attemptFaultReset();
+        }
+
+        return;
+    }
+
     // check if on auto
     if (m_mode != OperatingMode::AUTO)
     {
@@ -238,12 +249,6 @@ void sentinel::Controller::logicSolve()
             if (m_line.diverterRetracted() == true)
             {
                 m_state = CycleState::IDLE;
-            }
-            break;
-        case CycleState::FAULT:
-            if (m_fault_reset_requested == true)
-            {
-                attemptFaultReset(); // call fault reset
             }
             break;
     }
