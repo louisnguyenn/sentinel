@@ -151,6 +151,7 @@ void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) c
     registers[REG_PHOTOEYE] = m_photoeye_snapshot;
     registers[REG_DIVERTER_CMD] = m_last_diverter_cmd;
     registers[REG_DIVERTER_FEEDBACK] = static_cast<uint16_t>(m_line.diverterPosition());
+    registers[REG_RESET_FAULT] = m_fault_reset_requested;
 }
 
 // private methods
@@ -176,6 +177,7 @@ void sentinel::Controller::logicSolve()
     if (m_estop_active == true)
     {
         enterFault(FaultCode::ESTOP);
+        m_fault_reset_requested = false;
         return;
     }
 
@@ -282,12 +284,11 @@ void sentinel::Controller::enterFault(FaultCode code)
 
 void sentinel::Controller::attemptFaultReset()
 {
-    if (m_active_fault == FaultCode::ESTOP)
+    m_fault_reset_requested = false;
+
+    if (m_active_fault == FaultCode::ESTOP && m_estop_active)
     {
-        if (m_estop_active == true)
-        {
-            return; // cannot clear an e-stop fault while the e-stop is still active
-        }
+        return;
     }
     else if (m_active_fault == FaultCode::VISION_TIMEOUT)
     {
@@ -297,7 +298,6 @@ void sentinel::Controller::attemptFaultReset()
     // reset fault
     m_active_fault = FaultCode::NONE;
     m_state = CycleState::IDLE;
-    m_fault_reset_requested = false;
 
     m_line.setConveyorRunning(true); // set conveyor running
 }
