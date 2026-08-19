@@ -98,7 +98,7 @@ def highlight_active_mode(active_mode: int):
         if mode_value == active_mode:
             button.config(bg="lightblue")
         else:
-            button.config(bg="SystemButtonFace")  # Tkinter's default button color
+            button.config(bg="gray")  # Tkinter's default button color
 
 def poll_and_update():
     registers = client.read_holding_registers(address=0, count=17).registers
