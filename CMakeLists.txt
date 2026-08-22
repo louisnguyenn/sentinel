@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Everything except main.cpp gets compiled into a "library" — a reusable
 # bundle of compiled code that both the main program and (later) the test
 # suite can link against, without recompiling it twice.
-add_library(sentinel_hardware
+add_library(controller_hardware
     controller/src/photoeye.cpp
     controller/src/encoder.cpp
     controller/src/proximity_sensor.cpp
@@ -24,16 +24,16 @@ add_library(sentinel_hardware
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(MODBUS REQUIRED libmodbus)
 
-target_link_libraries(sentinel_hardware PUBLIC ${MODBUS_LIBRARIES})
-target_include_directories(sentinel_hardware PUBLIC ${MODBUS_INCLUDE_DIRS})
+target_link_libraries(controller_hardware PUBLIC ${MODBUS_LIBRARIES})
+target_include_directories(controller_hardware PUBLIC ${MODBUS_INCLUDE_DIRS})
 
-# Anything that links against sentinel_hardware automatically gets this
+# Anything that links against controller_hardware automatically gets this
 # include path, so #include "photoeye.hpp" resolves correctly.
-target_include_directories(sentinel_hardware PUBLIC controller/include)
+target_include_directories(controller_hardware PUBLIC controller/include)
 
 # --- The test-harness executable ---
-add_executable(sentinel_sim controller/src/main.cpp)
-target_link_libraries(sentinel_sim PRIVATE sentinel_hardware)
+add_executable(controller controller/src/main.cpp)
+target_link_libraries(controller PRIVATE controller_hardware)
 
 # --- Testing ---
 # Pull in GoogleTest automatically via FetchContent, so nobody who clones
@@ -52,14 +52,14 @@ FetchContent_MakeAvailable(googletest)
 # Turns on CTest, so `ctest` can discover and run the tests below.
 enable_testing()
 
-add_executable(sentinel_tests
+add_executable(controller_tests
     controller/tests/test_hardware.cpp
     controller/tests/test_controller.cpp
 )
-target_link_libraries(sentinel_tests PRIVATE sentinel_hardware GTest::gtest_main)
+target_link_libraries(controller_tests PRIVATE controller_hardware GTest::gtest_main)
 
-# Scans sentinel_tests and registers each individual TEST(...) as its own
+# Scans controller_tests and registers each individual TEST(...) as its own
 # CTest entry, so `ctest --output-on-failure` reports failures test-by-test
 # instead of as one opaque pass/fail blob.
 include(GoogleTest)
-gtest_discover_tests(sentinel_tests)
+gtest_discover_tests(controller_tests)

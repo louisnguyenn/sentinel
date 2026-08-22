@@ -118,6 +118,8 @@ class Controller
     bool m_last_diverter_cmd = false;
 
     bool m_invalid_mode_detected = false;
+
+    CycleState m_previous_state = CycleState::IDLE;
 };
 
 } // namespace sentinel
