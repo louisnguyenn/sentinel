@@ -261,9 +261,15 @@ void sentinel::Controller::outputScan()
 {
 }
 
-// TODO: increment cycle_count once we track previous state
 void sentinel::Controller::housekeeping()
 {
+    // check if a full cycle has completed
+    if ((m_previous_state == CycleState::DIVERT_ACCEPT || m_previous_state == CycleState::DIVERT_REJECT) && m_state == CycleState::IDLE)
+    {
+        m_stats.cycle_count++;
+    }
+
+    m_previous_state = m_state; // update state
 }
 
 void sentinel::Controller::enterFault(FaultCode code)
