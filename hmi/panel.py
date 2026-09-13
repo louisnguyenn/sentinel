@@ -1,14 +1,6 @@
 import tkinter as tk
 from pymodbus.client import ModbusTcpClient
-
-REG_MACHINE_STATE = 13
-REG_CYCLE_COUNT = 10
-REG_REJECT_COUNT = 11
-REG_FAULT_COUNT = 12
-REG_MODE_SELECT = 7
-REG_ESTOP = 8
-REG_RESET_FAULT = 9
-REG_MANUAL_CONVEYOR_JOG = 14
+from shared_registers import *
 
 client = ModbusTcpClient(host="localhost", port=5020)
 connected = client.connect()
@@ -101,7 +93,7 @@ def highlight_active_mode(active_mode: int):
             button.config(bg="gray")  # Tkinter's default button color
 
 def poll_and_update():
-    registers = client.read_holding_registers(address=0, count=17).registers
+    registers = client.read_holding_registers(address=0, count=REG_COUNT).registers
 
     STATE_NAMES = {
         0: "IDLE",

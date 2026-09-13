@@ -2,12 +2,7 @@ import csv
 import time
 from pathlib import Path
 from pymodbus.client import ModbusTcpClient
-
-REG_CYCLE_COUNT = 10
-REG_MACHINE_STATE = 13
-REG_INSPECTION_RESULT = 3
-REG_MODE_SELECT = 7
-REG_ACTIVE_FAULT_CODE = 17
+from shared_registers import *
 
 LOG_PATH = Path(__file__).parent.parent / "logs" / "cycles.csv"
 LOG_PATH.parent.mkdir(exist_ok=True)
@@ -35,7 +30,7 @@ previous_cycle_count = None
 previous_state = None
 
 while True:
-    registers = client.read_holding_registers(0, 18).registers
+    registers = client.read_holding_registers(address=0, count=REG_COUNT).registers
 
     current_cycle_count = registers[REG_CYCLE_COUNT]
     current_state = registers[REG_MACHINE_STATE]

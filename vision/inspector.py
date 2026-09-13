@@ -1,6 +1,7 @@
 from pymodbus.client import ModbusTcpClient
 from defect_check import detect_surface_defect, capture_current_part_image, classify_with_model
 import time
+from shared_registers import *
 
 REG_TRIGGER_CAPTURE = 2
 REG_INSPECTION_RESULT = 3
@@ -20,7 +21,7 @@ result_seq = 0
 loop_count = 0
 
 while True:
-    registers = client.read_holding_registers(address=0, count=17).registers
+    registers = client.read_holding_registers(address=0, count=REG_COUNT).registers
     curr_trigger = registers[REG_TRIGGER_CAPTURE]
 
     if curr_trigger == 1 and prev_trigger == 0:
