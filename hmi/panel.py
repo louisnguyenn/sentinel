@@ -1,6 +1,6 @@
 import tkinter as tk
 from pymodbus.client import ModbusTcpClient
-from shared_registers import *
+from vision.shared_registers import *
 
 client = ModbusTcpClient(host="localhost", port=5020)
 connected = client.connect()

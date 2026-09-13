@@ -2,7 +2,7 @@ import csv
 import time
 from pathlib import Path
 from pymodbus.client import ModbusTcpClient
-from shared_registers import *
+from vision.shared_registers import *
 
 LOG_PATH = Path(__file__).parent.parent / "logs" / "cycles.csv"
 LOG_PATH.parent.mkdir(exist_ok=True)
