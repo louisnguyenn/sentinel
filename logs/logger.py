@@ -35,7 +35,7 @@ previous_cycle_count = None
 previous_state = None
 
 while True:
-    registers = client.read_holding_registers(0, 17).registers
+    registers = client.read_holding_registers(0, 18).registers
 
     current_cycle_count = registers[REG_CYCLE_COUNT]
     current_state = registers[REG_MACHINE_STATE]
