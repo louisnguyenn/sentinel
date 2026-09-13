@@ -152,6 +152,7 @@ void sentinel::Controller::writeOutputRegisters(uint16_t registers[REG_COUNT]) c
     registers[REG_DIVERTER_CMD] = m_last_diverter_cmd;
     registers[REG_DIVERTER_FEEDBACK] = static_cast<uint16_t>(m_line.diverterPosition());
     registers[REG_RESET_FAULT] = m_fault_reset_requested;
+    registers[REG_ACTIVE_FAULT_CODE] = static_cast<uint16_t>(activeFault());
 }
 
 // private methods
