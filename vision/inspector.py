@@ -1,7 +1,11 @@
 from pymodbus.client import ModbusTcpClient
 from defect_check import detect_surface_defect, capture_current_part_image, classify_with_model
 import time
-from vision.shared_registers import *
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from shared_registers import *
 
 REG_TRIGGER_CAPTURE = 2
 REG_INSPECTION_RESULT = 3
