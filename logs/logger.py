@@ -25,3 +25,9 @@ if not LOG_PATH.exists():
     with open(LOG_PATH, "w", newline="") as f:
         csv.writer(f).writerow(["timestamp", "event_type", "cycle_state", "defective", "fault_code", "mode"])
 
+# write a log into the csv file
+def log_event(event_type, cycle_state="", defective="", fault_code="", mode=""):
+    with open(LOG_PATH, "a", newline="") as f:
+        csv.writer(f).writerow([time.time(), event_type, cycle_state, defective, fault_code, mode])
+    print(f"Logged: {event_type}")
+
