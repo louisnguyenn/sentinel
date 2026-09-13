@@ -1,12 +1,12 @@
 from pymodbus.client import ModbusTcpClient
 from defect_check import detect_surface_defect, capture_current_part_image, classify_with_model
 import time
-from shared_registers import *
+import sys
+from pathlib import Path
 
-REG_TRIGGER_CAPTURE = 2
-REG_INSPECTION_RESULT = 3
-REG_VISION_HEARTBEAT = 4
-REG_RESULT_SEQ = 16
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from shared_registers import *
+print("REG_COUNT is:", REG_COUNT)
 
 client = ModbusTcpClient(host="localhost", port=5020) # match controller port
 connected = client.connect()
@@ -21,7 +21,12 @@ result_seq = 0
 loop_count = 0
 
 while True:
-    registers = client.read_holding_registers(address=0, count=REG_COUNT).registers
+    result = client.read_holding_registers(address=0, count=REG_COUNT)
+    # print("Raw result:", result)
+    # print("Registers:", result.registers)
+    # print("Length:", len(result.registers))
+
+    registers = result.registers
     curr_trigger = registers[REG_TRIGGER_CAPTURE]
 
     if curr_trigger == 1 and prev_trigger == 0:
