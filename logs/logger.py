@@ -31,3 +31,30 @@ def log_event(event_type, cycle_state="", defective="", fault_code="", mode=""):
         csv.writer(f).writerow([time.time(), event_type, cycle_state, defective, fault_code, mode])
     print(f"Logged: {event_type}")
 
+previous_cycle_count = None
+previous_state = None
+
+while True:
+    registers = client.read_holding_registers(0, 17).registers
+
+    current_cycle_count = registers[REG_CYCLE_COUNT]
+    current_state = registers[REG_MACHINE_STATE]
+    mode = registers[REG_MODE_SELECT]
+
+    if previous_cycle_count is not None and current_cycle_count != previous_cycle_count:
+        defective = registers[REG_INSPECTION_RESULT]
+        log_event("cycle_complete", cycle_state=current_state, defective=defective, mode=mode)
+
+    if previous_state is not None:
+        if current_state == FAULT_STATE and previous_state != FAULT_STATE:
+            fault_code = registers[REG_ACTIVE_FAULT_CODE]
+            log_event("fault", fault_code=fault_code, mode=mode)
+
+        if current_state != FAULT_STATE and previous_state == FAULT_STATE:
+            fault_code = registers[REG_ACTIVE_FAULT_CODE]
+            log_event("fault cleared", fault_code=fault_code, mode=mode)
+
+    previous_cycle_count = current_cycle_count
+    previous_state = current_state
+
+    time.sleep(0.2)
